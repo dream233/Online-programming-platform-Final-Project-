@@ -1,5 +1,6 @@
 <template>
   <div>
+	<title1></title1>
     <el-row type="flex" justify="center">
       <!-- justify 对齐方式 -->
       <el-col :span="6">
@@ -39,8 +40,8 @@
 
                   <!-- 按钮 -->
                   <el-form-item>
-                      <el-button type="primary" @click="submitForm('information')">登录</el-button>
-                      <el-button @click="resetForm('information')">注册</el-button>
+                      <el-button type="primary" @click="loginning('information')">登录</el-button>
+                      <el-button @click="moveto('/register')">注册</el-button>
                   </el-form-item>
                 </el-form>
 
@@ -55,6 +56,7 @@
 </template>
 
 <script>
+import title1 from '../components/title1.vue';
 import Vue from 'vue';
     export default {
         data() 
@@ -68,26 +70,34 @@ import Vue from 'vue';
             };
         },
         methods: {
-            submitForm(formName) 
+			moveto(path){
+						  this.$router.push(path);
+			},
+            loginning(formName) 
             {
                 this.$refs[formName].validate((valid) => 
                     {
                         if (valid) 
                         {
-                            alert('Name:'+this.information.name+';Password:'+this.information.password);
-                            alert(this.information.name);
-                            // console.log(this.information.name);
-                        } else 
-                        {
+							if(this.information.name=="candidate"&&this.information.password=="candidate"){
+								alert('Name:'+this.information.name+';Password:'+this.information.password);
+								alert(this.information.name+'登录成功！');
+								this.moveto('/goto1');
+							}
+							else{
+								alert('用户名或密码错误！！！！');
+							}
+                        } 
+						else{
                             console.log('error submit!!');
                             return false;
                         }
                     }
                 );
-            },
-            resetForm(formName) {
-                this.$refs[formName].resetFields();
             }
+		},
+		components:{
+			title1
 		}
     }
 </script>
