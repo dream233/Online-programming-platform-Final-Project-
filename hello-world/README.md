@@ -1,8 +1,16 @@
 # hello-world
 
+## router install
+
+```
+npm install vue-router --save
+```
+
 ## element-ui install
 
+```
 cnpm i element-ui -S
+```
 
 ## Project setup
 ```
