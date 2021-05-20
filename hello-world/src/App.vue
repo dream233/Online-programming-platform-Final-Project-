@@ -1,24 +1,38 @@
 <template>
-  <div id="app">
-	  <div v-show="ifshow">
-		  <div>
-		  	<el-container>
-		  	  <el-aside width="200px">这里是线上笔试平台</el-aside>
-		  	  <el-container>
-		  	    <el-header>上线时间：xxxxxx</el-header>
-		  	    <el-main>这里写一些介绍</el-main>
-		  	    <el-footer>联系方式：13535549796</el-footer>
-		  	  </el-container>
-		  	</el-container>
-		  </div>
-		  <button @click="ifshow=0;moveto('/login')">点击进入登录/注册界面</button>
-	  </div>
-	  <router-view></router-view>
-  </div>
+	<div id="app">
+		<div v-show="ifshow">		
+			<!-- 主页面模块 -->
+			<div>
+				<el-container>
+					<!--  -->
+					<el-aside width="200px">面试题的位置</el-aside>
+					
+						<el-container>
+						<el-header>上线时间：xxxxxx</el-header>
+						
+						<!-- 代码框的位置 -->
+						<code-bar></code-bar>
+						
+						<el-footer>联系方式：13535549796</el-footer>
+						
+						</el-container>
+
+					<el-aside width="200px">聊天框的位置</el-aside>
+				</el-container>
+			</div>
+			
+			</div>
+			
+		<!-- 登录界面跳转（测试） -->
+		<button @click="ifshow=0;moveto('/login')">点击进入登录/注册界面</button>
+		
+		<router-view></router-view>
+	</div>
 </template>
 
 <script>
 	import title1 from './components/title1.vue'
+	import codeBar from './components/codeBar.vue'
 	import Vue from 'vue'
 	export default{
 		data(){
@@ -33,7 +47,8 @@
 			}
 		},
 		components:{
-			title1
+			title1,
+			codeBar
 		}
 	}
 </script>
@@ -64,12 +79,5 @@
 	    margin-bottom: 40px;
 	  }
 	  
-	  .el-container:nth-child(5) .el-aside,
-	  .el-container:nth-child(6) .el-aside {
-	    line-height: 260px;
-	  }
 	  
-	  .el-container:nth-child(7) .el-aside {
-	    line-height: 320px;
-	  }
 </style>
