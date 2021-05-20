@@ -1,33 +1,41 @@
-# hello-world
+# 如何优美的运行这个项目
 
-## router install
+## 1.安装依赖项目
+### router install（跳转支持）
 
 ```
 npm install vue-router --save
 ```
 
-## element-ui install
+### element-ui install(UI支持)
 
 ```
-cnpm i element-ui -S
+npm i element-ui -S
 ```
 
-## Project setup
+### Project setup（基本组件）
 ```
-cnpm install
+npm install
 ```
 
+### codemirror install（代码框支持）
+```
+npm install --save codemirror;
+npm install --save dedent;
+```
+
+## 2.运行项目
 ### Compiles and hot-reloads for development
 ```
-cnpm run serve
+npm run serve
 ```
 
 ### Compiles and minifies for production
 ```
-cnpm run build
+npm run build
 ```
 
-### Customize configuration
+## Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 
