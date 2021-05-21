@@ -5,7 +5,6 @@ import App from './App.vue';
 import router from './router.js'
 
 import VueCodemirror from 'vue-codemirror'
-// import base style
 import 'codemirror/lib/codemirror.css'
 
 Vue.config.productionTip = false

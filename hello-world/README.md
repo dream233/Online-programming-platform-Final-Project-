@@ -20,8 +20,8 @@ npm install
 
 ### codemirror install（代码框支持）
 ```
-npm install --save codemirror;
-npm install --save dedent;
+npm install --save codemirror
+npm install --save dedent
 ```
 
 ## 2.运行项目
