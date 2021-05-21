@@ -24,7 +24,8 @@ npm install --save codemirror
 npm install --save dedent
 
 
-## editor（面试题目支持）
+### editor（面试题目支持）
+'''
 npm install quill --save
 npm install vue-quill-editor --save
 
