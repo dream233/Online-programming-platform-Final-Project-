@@ -22,6 +22,17 @@ npm install
 ```
 npm install --save codemirror
 npm install --save dedent
+
+
+## editor（面试题目支持）
+npm install quill --save
+npm install vue-quill-editor --save
+
+npm install quill-image-resize-module -S
+下面这两个我创建项目的时候好像就有了所以我没弄，如果你们报错了可以试一试
+npm install node-sass --save-dev
+npm install sass-loader --save-dev
+如果还要npm别的，可以根据提示或者问问我，我记得是不用了
 ```
 
 ## 2.运行项目
