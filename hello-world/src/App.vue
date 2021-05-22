@@ -1,7 +1,9 @@
 <template>
 	<div id="app">
 		<!-- 登录界面跳转（测试） -->
-		<button @click="ifshow=0;moveto('/main')">点击进入主界面</button>
+		<!-- <el-container>
+		  <el-header>这里是一个初始界面（需要改更好看）</el-header>
+		</el-container> -->
 		
 		<router-view></router-view>
 	</div>
@@ -31,5 +33,14 @@
 </script>
 
 <style>
+	.el-header {
+	    background-color: #B3C0D1;
+	    color: #333;
+	    text-align: center;
+	    line-height: 60px;
+	  }
+	  body > .el-container {
+	      margin-bottom: 40px;
+	    }
 	  
 </style>
