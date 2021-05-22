@@ -1,6 +1,6 @@
 <template>
 	<div >
-		<div v-show="ifshow">		
+		<div>		
 			<!-- 主页面模块 -->
 			<div>
 				<el-container>
@@ -26,7 +26,7 @@
 			</div>
 			
 		<!-- 登录界面跳转（测试） -->
-		<button @click="ifshow=0;moveto('/login')">点击进入登录/注册界面</button>
+		<button @click="moveto('/login')">点击进入登录/注册界面</button>
 		<!-- 测试......跳转到创建/编辑题目界面 -->
 		<button @click="moveto('/problemEditor')">点击进入题目创建/编辑界面</button>
 		
@@ -71,7 +71,8 @@
 	    background-color: #D3DCE6;
 	    color: #333;
 	    text-align: center;
-	    line-height: 200px;
+	    /* line-height: 200px; */
+		height: calc(100vh - 160px); /* 这是侧框的滚动条*/
 	  }
 	  
 	  .el-main {
