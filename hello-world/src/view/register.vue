@@ -143,7 +143,7 @@
 				submitForm(formName) {
 				    this.$refs[formName].validate((valid) => {
 						if(valid){
-							if(this.information.name!="candidate"){
+							if(!(this.information.name=="1"||this.information.name=="2")){
 								alert('注册成功！！！！');
 							}
 							else{
