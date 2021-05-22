@@ -30,7 +30,12 @@
 			  >
 				  <el-input placeholder="请输入密码" v-model="information.password" show-password></el-input>
 			  </el-form-item>
-
+			  
+			  <!-- 选择身份-->
+			  <div align="middle">
+				  <el-radio v-model="information.id" label="candidate">候选人</el-radio>
+				  <el-radio v-model="information.id" label="interviewer">面试官</el-radio>
+			  </div>
 			  <!-- 按钮 -->
 			  <el-form-item>
 				  <el-button type="primary" @click="loginning('information')">登录</el-button>
@@ -58,7 +63,8 @@ import Vue from 'vue';
                 {
                 name: '',
                 password: '',
-                },
+				id: ''
+                }
             };
         },
         methods: {
@@ -71,13 +77,18 @@ import Vue from 'vue';
                     {
                         if (valid) 
                         {
-							if(this.information.name=="candidate"&&this.information.password=="candidate"){
+							if(this.information.name=="1"&&this.information.password=="1"&&this.information.id=="candidate"){
 								alert('Name:'+this.information.name+';Password:'+this.information.password);
 								alert(this.information.name+'登录成功！');
-								this.moveto('/goto1');
+								this.moveto('/loginSuccess');
+							}
+							else if(this.information.name=="2"&&this.information.password=="2"&&this.information.id=="interviewer"){
+								alert('Name:'+this.information.name+';Password:'+this.information.password);
+								alert(this.information.name+'登录成功！');
+								this.moveto('/loginSuccess');
 							}
 							else{
-								alert('用户名或密码错误！！！！');
+								alert('信息有误！！！！');
 							}
                         } 
 						else{
@@ -87,6 +98,9 @@ import Vue from 'vue';
                     }
                 );
             }
+		},
+		created(){
+			window.that=this
 		},
 		components:{
 			//title1
