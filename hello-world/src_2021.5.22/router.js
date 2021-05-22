@@ -6,6 +6,9 @@ import aboutus from './view/aboutus.vue'
 import register from './view/register.vue'
 import main from './view/main.vue'
 import problemEditor from './components/problemEditor.vue'
+import loginSuccess from './view/loginSuccess.vue'
+import hellovisit from './components/hellovisit.vue'
+import pblist from './components/pblist.vue'
 
 Vue.use(VueRouter)
 
@@ -13,11 +16,6 @@ const router = new VueRouter({
 	routes:[
 		{
 			path:'/',
-			name:'login',
-			component:login			
-		},
-		{
-			path:'/login',
 			name:'login',
 			component:login			
 		},
@@ -45,6 +43,29 @@ const router = new VueRouter({
 			path: '/problemEditor',
 			name: 'problemEditor',
 			component: problemEditor
+		},
+		{
+			path: '/loginSuccess',
+			name: 'loginSuccess',
+			component: loginSuccess,
+			children:[
+				{
+					path: 'aboutus',
+					component: aboutus
+				},
+				{
+					path: 'main',
+					component: main
+				},
+				{
+					path: '',
+					component: hellovisit
+				},
+				{
+					path: 'pblist',
+					component: pblist
+				}
+			]
 		}
 	]
 })
