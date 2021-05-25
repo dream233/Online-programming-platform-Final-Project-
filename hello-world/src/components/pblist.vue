@@ -124,9 +124,9 @@
 						             type: 'success',
 						             message: '题目id为' + id
 						           });
-						 						   //这里加上判断是否为创建人
-						 						   //if(......)
-						 						   this.moveto('/loginSuccess/problemEditor');
+						 			//这里加上判断是否为创建人
+						 			//if(......)
+						 			this.moveto('/loginSuccess/problemEditor/'+id+'/'+value);
 						         }).catch(() => {
 						           this.$message({
 						             type: 'info',
