@@ -13,10 +13,11 @@
 					<el-dialog title="题目信息(用于创建题目权限)" :visible.sync="dialogFormVisible">
 					  <el-form :model="information">
 					    <el-form-item label="题目id" :label-width="formLabelWidth">
-					      <el-input v-model="information.id" autocomplete="off"></el-input>
+					      <el-input type="text" placeholder="请输入8位数字id" 
+						  v-model="pinformation.id" show-word-limit autocomplete="off" maxlength="8"></el-input>
 					    </el-form-item>
 					    <el-form-item label="题目密码" :label-width="formLabelWidth">
-					      <el-input v-model="information.password" autocomplete="off"></el-input>
+					      <el-input v-model="pinformation.password" autocomplete="off"></el-input>
 					    </el-form-item>
 					  </el-form>
 					  <div slot="footer" class="dialog-footer">
@@ -79,7 +80,7 @@
 	                             //theme:'snow'
 	                           },
 							   dialogFormVisible: false,
-							           information: {
+							           pinformation: {
 							             id: '',
 										 password: '',
 							           },
@@ -98,8 +99,26 @@
 	        onEditorFocus(){}, // 获得焦点事件
 	        onEditorChange(){}, // 内容改变事件
 			saveHtml(){
-			  alert(this.content);
-			  console.log(this.content);
+			  //这里判断题目是否已存在
+			  //this.pinformation.id表示题目id
+			  //this.pinformation.password表示题目密码
+			  //如果不是已存在，那么返回true，替换下面的判断条件
+			  if(!(this.pinformation.id=='1')){
+				  this.$message({
+				            showClose: true,
+				            message: '题目创建成功',
+				            type: 'success'
+				          });
+				  //这里把this.content存入对应的题目id里，this.content为内容
+				  
+			  }
+			  else {
+				  this.$message({
+				            showClose: true,
+				            message: '题目id已存在',
+				            type: 'warning'
+				          });
+			  }
 			}
 	    },
 		created(){
