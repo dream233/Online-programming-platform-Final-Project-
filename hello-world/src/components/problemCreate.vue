@@ -104,7 +104,7 @@
 			  //this.pinformation.id表示题目id
 			  //this.pinformation.password表示题目密码
 			  //如果不是已存在，那么返回true，替换下面的判断条件
-			  /*const path = 'http://127.0.0.1:5000/problemCreate';
+			  /*const path = 'http://111.229.68.117:5000/problemCreate';
 			  axios.post(path,this.pinformation.id)
 					.then((res)=>{
 						

@@ -119,7 +119,7 @@ components: examples
     },
 	methods: {
 	    getMessage() {
-	      const path = 'http://localhost:5000';
+	      const path = 'http://111.229.68.117:5000/getcode';
 	      axios.get(path)
 	        .then((res) => {
 	          this.code = res.data;
@@ -132,7 +132,7 @@ components: examples
 		
 		postMessage() {
 			console.log(this.code)
-		    const path = 'http://localhost:5000';
+		    const path = 'http://111.229.68.117:5000/postcode';
 			var information ={
 				sendCode:this.code,
 				sendRoom:this.input

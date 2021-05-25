@@ -171,7 +171,7 @@
 						
 						if(valid){
 							console.log('y')
-							const path = 'http://127.0.0.1:5000/register';
+							const path = 'http://111.229.68.117:5000/register';
 							axios.post(path,this.information)
 								.then((res)=>{
 									if(res.data.message=='Y'){

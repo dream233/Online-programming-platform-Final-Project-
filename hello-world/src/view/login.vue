@@ -88,7 +88,7 @@ import axios from 'axios';
                     {
                         if (valid) 
                         {
-							const path = 'http://127.0.0.1:5000/login';
+							const path = 'http://111.229.68.117:5000/login';
 							axios.post(path,this.information)
 								.then((res)=>{
 									if(res.data.message=='Y'){

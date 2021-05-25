@@ -1,6 +1,16 @@
 # 如何优美的运行这个项目
-
+## 0.一键安装依赖（首先需要进入项目文件夹）
+```
+install.bat
+```
 ## 1.安装依赖项目
+
+
+### Project setup（基本组件）
+```
+npm install
+```
+
 ### router install（跳转支持）
 
 ```
@@ -13,9 +23,9 @@ npm install vue-router --save
 npm i element-ui -S
 ```
 
-### Project setup（基本组件）
+### axios(前后端交互)
 ```
-npm install
+npm install axios --save
 ```
 
 ### codemirror install（代码框支持）
