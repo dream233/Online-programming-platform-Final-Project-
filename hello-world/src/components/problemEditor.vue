@@ -24,7 +24,7 @@
 	  name: 'App',
 	  data(){
 	     return {
-	                 content: ``,
+	                 content: `<p>题目未响应，信息有误！</p>`,
 	                 editorOption: {
 	                   modules:{
 	                               toolbar:[
@@ -81,13 +81,23 @@
 			  // console.log(this.content);
 	    //     },
 			saveHtml(){
-			  alert(this.content);
+				
+			  //把this.content保存到对应题目id里
+			  //题目id为this.$route.params.id
+			  //下面这可以去掉，用于测试
 			  console.log(this.content);
 			}
 	    },
 		created(){
 			window.that=this;
-			this.content='<ul><li><strong><em><u>dkfjlskdjfkslf</u></em></strong></li><li><strong><em><u>附件是立刻搭街坊立刻是</u></em></strong></li><li><strong><em><u>是独立开发炯之女会计出纳在</u></em></strong></li><li><strong><em><u>法律搭街坊立刻就在芬兰空军的离开这世界</u></em></strong></li></ul><p><strong><em><u>dk附件是的JFK老师的</u></em></strong></p><p><br></p><p><br></p><p><br></p><p><strong><em><u>首都基辅罗斯大家来看</u></em></strong></p><p><strong><em><u>搭街坊昆仑山觉得</u></em></strong></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><strong><em><u>打卡时间分厘卡圣诞节饭卡里说的你看     方式决定离开房间昆仑山大家</u></em></strong></p><p><strong><em>但是看了方式</em></strong></p><p><br></p><p><br></p><p><br></p><p><strong><em>出行距离空间kl</em></strong></p><p><br></p><p><strong><em>发就可怜见立刻就 JFK四点零分记录卡撒旦解放开始JFK老师讲课靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠</em></strong></p><p><br></p><p><strong><em>付款的时间浪费空间克隆证据</em></strong></p>'
+			//这里改成判断题目id密码是否符合数据库
+			//this.$route.params.id表示题目id
+			//this.$route.params.password表示题目密码
+			//判断是否符合，符合返回true，进入判断条件
+			if(this.$route.params.password=='1'){
+				//如果符合，那么调用题目内容（即一大串字符串），然后this.content=内容（下面那些内容用于测试，可以删掉）
+				this.content='<ul><li><strong><em><u>dkfjlskdjfkslf</u></em></strong></li><li><strong><em><u>附件是立刻搭街坊立刻是</u></em></strong></li><li><strong><em><u>是独立开发炯之女会计出纳在</u></em></strong></li><li><strong><em><u>法律搭街坊立刻就在芬兰空军的离开这世界</u></em></strong></li></ul><p><strong><em><u>dk附件是的JFK老师的</u></em></strong></p><p><br></p><p><br></p><p><br></p><p><strong><em><u>首都基辅罗斯大家来看</u></em></strong></p><p><strong><em><u>搭街坊昆仑山觉得</u></em></strong></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><strong><em><u>打卡时间分厘卡圣诞节饭卡里说的你看     方式决定离开房间昆仑山大家</u></em></strong></p><p><strong><em>但是看了方式</em></strong></p><p><br></p><p><br></p><p><br></p><p><strong><em>出行距离空间kl</em></strong></p><p><br></p><p><strong><em>发就可怜见立刻就 JFK四点零分记录卡撒旦解放开始JFK老师讲课靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠靠</em></strong></p><p><br></p><p><strong><em>付款的时间浪费空间克隆证据</em></strong></p>'
+			}
 		}
 	}
 </script>
