@@ -73,7 +73,7 @@ const router = new VueRouter({
 					component: pblist
 				},
 				{
-					path: 'problemEditor',
+					path: 'problemEditor/:id/:password',
 					component: problemEditor
 				},
 				{
