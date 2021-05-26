@@ -1,5 +1,11 @@
 <template>
-  <codemirror v-model="code" :options="cmOption" />
+	<div>
+		<codemirror v-model="code" :options="cmOption" />
+		<button @click="getMessage()">get</button>
+		<button @click="postMessage()">post</button>
+		<el-input v-model="input" placeholder="请输入内容"></el-input>
+	</div>
+	
 </template>
 
 <script>
@@ -43,6 +49,9 @@
   import'codemirror/addon/fold/markdown-fold.js'
   import'codemirror/addon/fold/xml-fold.js'
   
+  import axios from 'axios'
+  import qs from 'qs'
+  
   export default {
     name: 'codemirror-example-javascript',
     title: 'Mode: text/javascript & Theme: monokai',
@@ -51,29 +60,30 @@
     },
     data() {
       return {
-        code: dedent`
-          import someResource from 'codemirror/some-resource'
-          export default {
-            data () {
-              // 这是一个包含、代码提示、折叠、选中、sublime模式...的编辑器
-              // 按下Ctrl键可以体验代码提示
-              // 可以尝试sublime下的快捷键操作
-              return {
-                exampleCode: 'const a = 10',
-                cmOption: {
-                  tabSize: 4,
-                  styleActiveLine: true,
-                  lineNumbers: true,
-                  line: true,
-                  mode: 'text/javascript',
-                  lineWrapping: true,
-                  theme: 'default'
-                }
-              }
-            },
-            components: examples
-          }
-        `,
+		  
+		code: 
+`import someResource from 'codemirror/some-resource'
+export default {
+data () {
+  // 这是一个包含、代码提示、折叠、选中、sublime模式...的编辑器
+  // 按下Ctrl键可以体验代码提示
+  // 可以尝试sublime下的快捷键操作
+  return {
+	exampleCode: 'const a = 10',
+	cmOption: {
+	  tabSize: 4,
+	  styleActiveLine: true,
+	  lineNumbers: true,
+	  line: true,
+	  mode: 'text/javascript',
+	  lineWrapping: true,
+	  theme: 'default'
+	}
+  }
+},
+components: examples
+}
+`,
         cmOption: {
           tabSize: 4,
           styleActiveLine: false,
@@ -95,16 +105,50 @@
           showCursorWhenSelecting: true,
           theme: "monokai",
           extraKeys: { "Ctrl": "autocomplete" }
-        }
+        },
+		input:'dasda'
       }
+	  
     },
+	
     mounted() {
       setTimeout(() => {
         this.styleSelectedText = true,
         this.cmOption.styleActiveLine = true
       }, 1800)
-    }
-  }
+    },
+	methods: {
+	    getMessage() {
+	      const path = 'http://111.229.68.117:5000/getcode';
+	      axios.get(path)
+	        .then((res) => {
+	          this.code = res.data;
+	        })
+	        .catch((error) => {
+	          // eslint-disable-next-line
+	          console.error(error);
+			});
+		},
+		
+		postMessage() {
+			console.log(this.code)
+		    const path = 'http://111.229.68.117:5000/postcode';
+			var information ={
+				sendCode:this.code,
+				sendRoom:this.input
+			}
+		    axios.post(path,information)
+			.then((res) => {
+				alert(res.data);
+		    })
+		    .catch((error) => {
+		      // eslint-disable-next-line
+		      console.error(error);
+			});
+		},
+	},
+	
+}
 </script>
 
 <style>
