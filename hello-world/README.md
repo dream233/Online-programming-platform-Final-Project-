@@ -47,8 +47,24 @@ npm install sass-loader --save-dev
 如果还要npm别的，可以根据提示或者问问我，我记得是不用了
 ```
 
-## 2.运行项目
-### Compiles and hot-reloads for development
+### socketio（聊天室支持）
+```
+npm install --save moment
+
+npm i socket.io --save
+
+npm i vue-socket.io --save
+
+npm i socket.io-client --save
+```
+
+# 2.运行项目
+
+## 2.1 运行 socketio
+```
+npm run server
+```
+## 2.2 新开一个终端   Compiles and hot-reloads for development
 ```
 npm run serve
 ```
