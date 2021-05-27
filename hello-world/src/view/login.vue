@@ -72,7 +72,8 @@ import axios from 'axios';
 			moveto(path){
 						  var information = {
 							  name: this.information.name,
-							  id: this.information.id
+							  id: this.information.id,
+							  roomID: '0'
 						  };
 						  information = JSON.stringify(information);
 						  this.$router.push({
