@@ -46,7 +46,7 @@
 
 <script>
 import socketio from "socket.io-client";
-import storage from "../../server/storage";
+import storage from "../api/storage";
 import axios from "axios";
 
 const moment = require("moment");
