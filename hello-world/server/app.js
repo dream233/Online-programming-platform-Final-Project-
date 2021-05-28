@@ -14,7 +14,6 @@ io.on('connection',function(socket){
 
         socket.username = data.username
         socket.roomID = data.roomID
-        io.to(data.roomID).emit('online',data.username);
 
     })
     socket.on('msg',function(data){
@@ -23,10 +22,6 @@ io.on('connection',function(socket){
         console.log(JSON.stringify(data)+"发消息了")
     })
 
-    socket.on('disconnect',function(){
-        socket.to(socket.roomID).emit('offline',socket.username);
-        console.log(socket.username+'下线了~')
-    })
 })
 
 console.log('listening at :' +PORT)

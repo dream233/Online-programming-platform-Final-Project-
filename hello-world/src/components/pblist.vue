@@ -59,7 +59,6 @@
 					.then((res)=>{
 						//console.log(res.data.password);
 						pp=res.data.password;
-						console.log(pp);
 					});
 					
 				 this.$prompt('请输入密码', '提示', {

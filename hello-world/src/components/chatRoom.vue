@@ -1,140 +1,144 @@
 <template>
-  <div id='chatroom'>
-    <div class='header'>
-      <h4 class="header-text">ChatRoom:{{roomID}}</h4>
+  <div id="chatroom" class="chat">
+    <div class="header">
+      <h4 class="header-text">ChatRoom:{{ roomID }}</h4>
     </div>
-    <div class='body'>
-      <div v-for="(item,index) in msgs" :key="index">
-                <div v-if="item.msgType=='online'" class="onlineMsg">
-                    <div class="sysTime">{{item.time}}</div>
-                    <div class="online">{{item.username}}上线</div>
-                </div>
-                <div v-else-if="item.msgType=='offline'" class="offlineMsg">
-                    <div class="sysTime">{{item.time}}</div>
-                    <div class="online">{{item.username}}下线</div>
-                </div>
-                <div v-else-if="item.msgType=='clientMsg'" class="clientMsg">
-                    <div class="sysTime">{{item.time}}</div>
-                    <div v-if="item.username==JSON.parse($route.query.information).id" class="self">
-                      
-                        <div class="bubble">
-                            <div class="chatBubble">{{item.msg}}</div>
-                            <div class="triangle"></div>
-                        </div>
-                        <div class="user">{{item.username}}</div>
-                    </div>
-                    <div v-else class="others">
-                        <div class="user">{{item.username}}</div>
-                        <div class="bubble">
-                            <div class="chatBubble">{{item.msg}}</div>
-                            <div class="triangle"></div>
-                        </div>
-                    </div>
-                </div>
+    <div class="body">
+      <div v-for="(item, index) in msgs" :key="index">
+        <div v-if="item.msgType == 'clientMsg'" class="clientMsg">
+          <div class="sysTime">{{ item.time }}</div>
+          <div
+            v-if="item.username == JSON.parse($route.query.information).id"
+            class="self"
+          >
+            <div class="bubble">
+              <div class="chatBubble">{{ item.msg }}</div>
+              <div class="triangle"></div>
             </div>
-            
-    </div>
-    <div class='msgInput'>
-                <input
-          v-model='msg'
-          autofocus
-          class='input'
-          type='text'
-          placeholder='发送信息'
-          @keydown.enter="send(msg)"
-        />
+            <div class="user">{{ item.username }}</div>
+          </div>
+          <div v-else class="others">
+            <div class="user">{{ item.username }}</div>
+            <div class="bubble">
+              <div class="chatBubble">{{ item.msg }}</div>
+              <div class="triangle"></div>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
+    <!--发送内容-->
+    <!--   class='msgInput'-->
+    <div class="beforeInput"></div>
+    <div class="msgInput">
+      <textarea
+        v-model="msg"
+        autofocus
+        class="input"
+        type="text"
+        placeholder="请输入会话内容"
+        @keydown.enter="send(msg)"
+      />
+      <button class="sendBtn" id="serviceSendBtn">Enter</button>
+    </div>
   </div>
 </template>
 
 <script>
-import socketio from 'socket.io-client';
-import storage from '../../server/storage';
+import socketio from "socket.io-client";
+import storage from "../../server/storage";
+import axios from "axios";
 
-const moment = require('moment');
+const moment = require("moment");
 
 export default {
-  name: 'chatRoom',
+  name: "chatRoom",
   data() {
     return {
       socket: null,
-      msg: '',
+      msg: "",
       msgs: storage.fetch(),
-      roomID: '0',
+      roomID: "0",
       msgID: {},
     };
   },
-  mounted() {
-    this.socket = socketio('http://localhost:8081');
+  created() {
+    this.socket = socketio("http://localhost:8081");
     var information = JSON.parse(this.$route.query.information);
-    this.roomID = 'roomID 123';
+    this.roomID = information.roomID;
     const IDdata = {
-      roomID: 'this.roomID',
+      roomID: this.roomID,
       username: information.id,
     };
     if (this.roomID && information.id) {
-      this.socket.emit('joinRoom', IDdata);
+      this.socket.emit("joinRoom", IDdata);
     } else {
-      this.$router.push('/');
+      this.$router.push("/");
     }
-    this.socket.on('online', (data) => {
+    this.socket.on("broadcastMsg", (data) => {
       this.msgs.push({
-        msgType: 'online',
-        username: data,
-        time: moment().format('HH:mm:ss'),
-      });
-      storage.save(this.msgs);
-    });
-    this.socket.on('broadcastMsg', (data) => {
-      this.msgs.push({
-        msgType: 'clientMsg',
+        msgType: "clientMsg",
         username: data.username,
         msg: data.msg,
-        time: moment().format('HH:mm:ss'),
-      });
-      storage.save(this.msgs);
-    });
-    this.socket.on('offline', (data) => {
-      this.msgs.push({
-        msgType: 'offline',
-        username: data,
-        time: moment().format('HH:mm:ss'),
+        time: moment().format("HH:mm:ss"),
       });
       storage.save(this.msgs);
     });
   },
   updated() {
     this.$nextTick(() => {
-      const oBody = document.querySelector('.body');
+      const oBody = document.querySelector(".body");
       oBody.scrollTop = oBody.scrollHeight;
     });
   },
   methods: {
-      send(data) {
-        var information = JSON.parse(this.$route.query.information);
+    send(data) {
+      var information = JSON.parse(this.$route.query.information);
       const transdata = {
         msg: data,
         username: information.id,
       };
       if (data) {
-        this.socket.emit('msg', transdata);
-        this.msg = '';
+        this.socket.emit("msg", transdata);
+        this.msg = "";
       }
+      //往后端发送roomID 的代码
+      var x = {
+        roomID: this.roomID,
+        username: information.id,
+        email: information.name,
+        msg: data,
+      };
+      const path = "http://111.229.68.117:8080/chat";
+      axios
+        .post(path, x)
+        .then((res) => {
+          console.log("成功发送数据");
+          console.log(res);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
 };
 </script>
 
 <style scoped>
-a {
-  text-decoration: none;
+.sendBtn {
+  width: 68px;
+  height: 25px;
+  background: #62aaec;
+  border: none;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  color: white;
 }
-a:hover {
-  color: brown;
+input:focus, textarea:focus {
+    outline: none;
 }
 .chatroom {
-  width: 400px;
-  height: 600px;
   position: relative;
   border: 1px solid #999;
   margin: 0 auto;
@@ -148,51 +152,23 @@ a:hover {
   justify-content: space-between;
   align-items: center;
 }
-.header-text{
-  margin:0 auto;
+.header-text {
+  margin: 0 auto;
 }
 .body {
-  height: 300px;
+  height: 320px;
   width: 100%;
   overflow: auto;
   text-align: center;
 }
-.iconfont {
-  font-size: 24px;
-}
-.logout,
-.about {
-  padding: 7px;
-}
-.sysTime {
-  color: #999;
-  font-size: 13px;
-  margin-bottom: 3px;
-}
-.onlineMsg,
-.offlineMsg,
+
 .clientMsg {
   margin-bottom: 10px;
   height: 50px;
   width: 100%;
-}
-.clientMsg {
   position: relative;
 }
-.online,
-.offline {
-  display: inline-block;
-  height: 23px;
-  padding-left: 10px;
-  padding-right: 10px;
-  border-radius: 3px;
-  color: #999;
-  text-align: center;
-  line-height: 23px;
-  background-color: rgb(209, 209, 209);
-  font-size: 16px;
-  box-sizing: border-box;
-}
+
 .self {
   position: absolute;
   right: 14px;
@@ -237,37 +213,32 @@ a:hover {
   display: inline-block;
   margin-right: 10px;
 }
-.footer {
-  height: 45px;
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-  display: -webkit-flex;
-  display: flex;
-}
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
 
+.sysTime {
+  color: #999;
+  font-size: 13px;
+  margin-bottom: 3px;
+}
+.beforeInput {
+  position: relative;
+  width: 100%;
+  height: 5px;
+  background-color: rgb(246, 247, 250);
+}
 .msgInput {
   position: relative;
   width: 100%;
-height: 200px;
+  height: 200px;
 }
 .msgInput .input {
   box-sizing: border-box;
   width: 100%;
   height: 200px;
   border: 1px solid #eee;
-  padding-left: 50px;
-  background-color: rgb(227, 228, 231);
-  text-align: center;
-  font-size: 18px;
+  font-family: normal;
+  padding:15px;
+  background-color: rgb(246, 247, 250);
+  font-size: 16px;
   caret-color: rgb(62, 141, 231);
   color: rgb(55, 125, 182);
 }

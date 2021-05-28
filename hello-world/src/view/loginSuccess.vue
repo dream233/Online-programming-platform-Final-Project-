@@ -19,6 +19,11 @@
 				var information = JSON.parse(this.$route.query.information);
 				alert('这里是用户'+information.name+'的首页');
 			}
+		},
+		created(){
+			var information = JSON.parse(this.$route.query.information);
+			console.log(information.roomID);
+			console.log(information.history);
 		}
 	  }
 </script>

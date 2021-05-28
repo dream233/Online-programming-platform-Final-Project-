@@ -40,7 +40,6 @@
 			console.log('seeProblem');
 			axios.post(path,tem)
 				.then((res)=>{
-					console.log(res.data.password);
 					pp=res.data.password;
 					if(this.$route.params.password==pp){
 						

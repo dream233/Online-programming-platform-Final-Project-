@@ -104,7 +104,7 @@
 	import title1 from '../components/title1.vue'
 	import codeBar from '../components/codeBar.vue'
 	import chatRoom from '../components/chatRoom.vue'
-
+	import axios from 'axios';
 
 	export default{
 		data(){
@@ -120,21 +120,47 @@
 				roomForm_C: {
 					roomID: ''
 				},
+				history: null
 			}
 		},
 		created() {
+			console.log('main create')
 			var information = JSON.parse(this.$route.query.information);
-			console.log('hi1');
-			console.log(information.id);
 			console.log(information.roomID);
-			console.log('h2');
-			
+			console.log(information.history)
+
 			//已经输入过房间号
 			if(information.roomID!=='0'){
 				this.show_candidate=0;
 				this.show_interviewer=0;
 				this.show_home=1;
-				console.log(information.roomID)
+				var x;
+				if(this.roomForm_C.roomID===''){
+					x = {roomID:this.roomForm_I.roomID};
+				}
+				else if(this.roomForm_I.roomID===''){
+					x = {roomID:this.roomForm_C.roomID};
+				}
+				const path = 'http://111.229.68.117:5000/createroom';
+				axios.post(path,x)
+								.then((res)=>{
+									//房间号已存在
+									if(res.data.message=='Y'){
+										//加入成功
+										this.$message.success('成功进入房间')
+										/*
+											发送roomID给后端，获取聊天记录
+										*/
+										this.history=res.data.chathistory
+									}
+									else{
+										this.$message.error('roomID不存在');
+									}
+								})
+								.catch((error)=>{
+									console.log(error);
+							})
+
 			}
 			else {//之前没输入过房间号
 				this.show_candidate= information.id==='candidate'?1:0;
@@ -148,17 +174,15 @@
 					information = {
 						name: information.name,
 						id: information.id,
-						roomID: this.roomForm_C.roomID
+						roomID: this.roomForm_C.roomID,
 					}
 				}else{
 					information = {
 						name: information.name,
 						id: information.id,
-						roomID: this.roomForm_I.roomID
+						roomID: this.roomForm_I.roomID,
 					}
 				}
-				console.log(information.id);
-				console.log(information.roomID);
 				information = JSON.stringify(information);
 				this.$router.push({
 					path: path,
@@ -169,16 +193,39 @@
 			},
 			createRoom(roomForm){
 				this.$refs[roomForm].validate((valid) => 
-                    {
+                    {	
                         if (valid) 
                         {
-							 this.$message.success('创建房间成功')
-							 this.show_home=true
-							 this.show_interviewer=false
-							 this.moveto('/loginSuccess/main');
-							 /*
-							 	下面应该写 往后端发送roomID 的代码
-							 */
+							 //点“创建”按钮，判断是否已存在
+							 var x = {roomID:this.roomForm_I.roomID};
+							const path = 'http://111.229.68.117:5000/createroom';
+							axios.post(path,x)
+								.then((res)=>{
+									//若无，创建成功，将{ “roomID”:”111” }发送给后端，后端返回历史记录
+									if(res.data.message=='N'){
+										//创建成功
+									
+										this.$message.success('创建房间成功')
+										
+										/*
+										发送roomID给后端，获取聊天记录
+										*/
+										
+										this.show_interviewer=false
+										
+										this.show_home=true
+										this.moveto('/loginSuccess/main');
+										location.reload();
+										
+									}
+									//若已存在，弹框提醒面试官房间已存在
+									else{
+										this.$message.error('roomID已存在');
+									}
+								})
+								.catch((error)=>{
+									console.log(error);
+							})
                         } 
 						else{
                             this.$message.error('请输入8位房间号')
@@ -191,14 +238,43 @@
 				this.$refs[roomForm].validate((valid) => 
                     {
                         if (valid) 
-                        {
-							 this.$message.success('成功进入房间')
-							 this.show_home=true
-							 this.show_interviewer=false
-							 this.moveto('/loginSuccess/main');
-							 /*
-							 	下面应该写 往后端发送roomID 的代码
-							 */
+                        {	
+							var x;
+							if(this.roomForm_C.roomID===''){
+								x = {roomID:this.roomForm_I.roomID};
+							}
+							else if(this.roomForm_I.roomID===''){
+								x = {roomID:this.roomForm_C.roomID};
+							}
+							//往后端发送roomID 的代码
+							const path = 'http://111.229.68.117:5000/createroom';
+							axios.post(path,x)
+								.then((res)=>{
+									//房间号已存在
+									if(res.data.message=='Y'){
+										//加入成功
+										this.$message.success('成功进入房间')
+										/*
+											发送roomID给后端，获取聊天记录
+										*/
+										this.history=res.data.chathistory
+
+										
+										this.show_interviewer=false
+										this.show_candidate=false
+										
+										this.show_home=true
+										this.moveto('/loginSuccess/main');
+										
+										location.reload();
+									}
+									else{
+										this.$message.error('roomID不存在');
+									}
+								})
+								.catch((error)=>{
+									console.log(error);
+							})
                         } 
 						else{
                             this.$message.error('请输入8位房间号')
