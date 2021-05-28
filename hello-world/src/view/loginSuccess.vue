@@ -2,7 +2,6 @@
 	<div>
 		<title1></title1>
 		<router-view></router-view>
-		<button @click="test()">点击查看登陆信息</button>
 	</div>
 	
 </template>
@@ -15,16 +14,7 @@
 			title1
 		},
 		methods: {
-			test(){
-				var information = JSON.parse(this.$route.query.information);
-				alert('这里是用户'+information.name+'的首页');
-			}
 		},
-		created(){
-			var information = JSON.parse(this.$route.query.information);
-			console.log(information.roomID);
-			console.log(information.history);
-		}
 	  }
 </script>
 

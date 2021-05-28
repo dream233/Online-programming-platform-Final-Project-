@@ -1,6 +1,6 @@
 <template>
 	<div>
-		欢迎来到首页，这里需要优化界面奥~~
+		<video src = '../../assets/1.mp4' autoplay="autoplay"></video>
 	</div>
 </template>
 
@@ -8,4 +8,8 @@
 </script>
 
 <style>
+	video{
+		height: 70%;
+		width: 100%;
+	}
 </style>

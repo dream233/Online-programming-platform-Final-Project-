@@ -115,7 +115,7 @@ components: examples
 		
 	    getMessage() {
 	      const path = this.global.baseURL + ':5000/postcode';
-		  console.log("get function")
+		  // console.log("get function")
 		  var i = JSON.parse(this.$route.query.information);
 		  var room = i.roomID;
 		  var information ={
@@ -136,7 +136,7 @@ components: examples
 		postMessage() {
 			// console.log(this.code)
 		    const path = this.global.baseURL + ':5000/postcode';
-			console.log("post function")
+			// console.log("post function")
 			var i = JSON.parse(this.$route.query.information);
 			var room = i.roomID;
 			console.log('room id is'+ room)

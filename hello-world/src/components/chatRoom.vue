@@ -62,19 +62,25 @@ export default {
       msgID: {},
     };
   },
+  
+  // 创建
   created() {
-    this.socket = socketio("http://localhost:8081");
+    this.socket = socketio("http://111.229.68.117:5000");
     var information = JSON.parse(this.$route.query.information);
     this.roomID = information.roomID;
     const IDdata = {
       roomID: this.roomID,
       username: information.id,
     };
+	
+	// 成功进入房间，调用joinRoom
     if (this.roomID && information.id) {
       this.socket.emit("joinRoom", IDdata);
     } else {
       this.$router.push("/");
     }
+	
+	// 监听服务器回传的信息
     this.socket.on("broadcastMsg", (data) => {
       this.msgs.push({
         msgType: "clientMsg",
@@ -85,12 +91,15 @@ export default {
       storage.save(this.msgs);
     });
   },
+  
+  // 重新调用DOM时，回到聊天室最上方
   updated() {
     this.$nextTick(() => {
       const oBody = document.querySelector(".body");
       oBody.scrollTop = oBody.scrollHeight;
     });
   },
+  
   methods: {
     send(data) {
       var information = JSON.parse(this.$route.query.information);
@@ -109,7 +118,7 @@ export default {
         email: information.name,
         msg: data,
       };
-      const path = this.global.baseURL +":8080/chat";
+      const path = this.global.baseURL +":5000/chat";
       axios
         .post(path, x)
         .then((res) => {

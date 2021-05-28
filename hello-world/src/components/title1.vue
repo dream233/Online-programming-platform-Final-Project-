@@ -18,6 +18,8 @@
 			  <el-menu-item index="3-2" @click="newProblem()">新建面试题</el-menu-item>
 		  </el-submenu>
 		  <el-menu-item index="4" @click="moveto('/loginSuccess/aboutus')">关于我们</el-menu-item>
+		  
+		  <el-menu-item index="5" @click="test()">个人信息</el-menu-item>
 		</el-menu>
 	</div>
 </template>
@@ -59,6 +61,12 @@
 				  var information = this.$route.query.information;
 				  this.moveto('/loginSuccess/problemCreate');
 			  }
+		  },
+		  test(){
+			  var information = this.$route.query.information;
+			  information = JSON.parse(information);
+			  
+			  alert("当前用户邮箱："+ information.name + "用户名： " + information.username + "用户身份： " + information.id)
 		  }
 	    }
 	  }

@@ -72,6 +72,7 @@ import axios from 'axios';
 			moveto(path){
 						  var information = {
 							  name: this.information.name,
+							  username:this.information.username,
 							  id: this.information.id,
 							  roomID: '0'
 						  };
@@ -126,7 +127,7 @@ import axios from 'axios';
 		height:100%;
 	}
 	.box{ 
-		height: 100px;
+		height: 0px;
 	}
 	.el-radio-group{
 		display: flex;

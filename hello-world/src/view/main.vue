@@ -170,20 +170,22 @@
 		methods:{
 			moveto(path){
 				var information = JSON.parse(this.$route.query.information);
-				if(information.id === 'candidate'){
-					information = {
-						name: information.name,
-						id: information.id,
-						roomID: this.roomForm_C.roomID,
-					}
-				}else{
-					information = {
-						name: information.name,
-						id: information.id,
-						roomID: this.roomForm_I.roomID,
-					}
+				
+				information = {
+					name: information.name,
+					username:information.username,
+					id: information.id,
 				}
+				
+				if(information.id === 'candidate'){
+					information.roomID = this.roomForm_C.roomID
+				}else{
+					information.roomID = this.roomForm_I.roomID
+				}
+				
 				information = JSON.stringify(information);
+				
+				//路由向下一级传递信息
 				this.$router.push({
 					path: path,
 					query: {
@@ -196,23 +198,19 @@
                     {	
                         if (valid) 
                         {
-							 //点“创建”按钮，判断是否已存在
-							 var x = {roomID:this.roomForm_I.roomID};
-							const path = 'http://111.229.68.117:5000/createroom';
+							//点“创建”按钮，判断是否已存在
+							var x = {roomID:this.roomForm_I.roomID};
+							const path = this.global.baseURL + ':5000/createroom';
 							axios.post(path,x)
 								.then((res)=>{
 									//若无，创建成功，将{ “roomID”:”111” }发送给后端，后端返回历史记录
 									if(res.data.message=='N'){
+										
 										//创建成功
-									
 										this.$message.success('创建房间成功')
 										
-										/*
-										发送roomID给后端，获取聊天记录
-										*/
-										
+										//发送roomID给后端，获取聊天记录
 										this.show_interviewer=false
-										
 										this.show_home=true
 										this.moveto('/loginSuccess/main');
 										location.reload();
@@ -247,22 +245,18 @@
 								x = {roomID:this.roomForm_C.roomID};
 							}
 							//往后端发送roomID 的代码
-							const path = 'http://111.229.68.117:5000/createroom';
+							const path = this.global.baseURL + ':5000/createroom';
 							axios.post(path,x)
 								.then((res)=>{
 									//房间号已存在
 									if(res.data.message=='Y'){
 										//加入成功
 										this.$message.success('成功进入房间')
-										/*
-											发送roomID给后端，获取聊天记录
-										*/
-										this.history=res.data.chathistory
-
 										
+										//发送roomID给后端，获取聊天记录
+										this.history=res.data.chathistory
 										this.show_interviewer=false
 										this.show_candidate=false
-										
 										this.show_home=true
 										this.moveto('/loginSuccess/main');
 										
@@ -296,7 +290,7 @@
 <style>
 .box {
   width: 480px;
-  height: 340px;
+  height: 100px;
 
   border-radius: 20px;
   position: absolute;
