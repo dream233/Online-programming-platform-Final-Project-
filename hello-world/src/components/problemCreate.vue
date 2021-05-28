@@ -102,7 +102,7 @@
 			saveHtml(){
 				var information = this.$route.query.information;
 				information = JSON.parse(information);
-				const path = 'http://111.229.68.117:5000/problemCreate';
+				const path = this.global.baseURL + ':5000/problemCreate';
 				var probleminfor = {id:this.pinformation.id,password:this.pinformation.password,owner:information.name,contents:this.content};
 				axios.post(path,probleminfor)
 					.then((res)=>{

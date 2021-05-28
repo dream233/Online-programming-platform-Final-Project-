@@ -84,7 +84,7 @@
 			saveHtml(){
 				var information = this.$route.query.information;
 				information = JSON.parse(information);
-				const path = 'http://111.229.68.117:5000/problemEdit';
+				const path = this.global.baseURL + ':5000/problemEdit';
 				var probleminfor = {id:this.pinformation.id,password:this.pinformation.password,owner:information.name,contents:this.content};
 				axios.post(path,probleminfor)
 					.then((res)=>{
@@ -111,7 +111,7 @@
 			//this.$route.params.id表示题目id
 			//this.$route.params.password表示题目密码
 			//判断是否符合，符合返回true，进入判断条件
-			const path = 'http://111.229.68.117:5000/problemCheck';
+			const path = this.global.baseURL + ':5000/problemCheck';
 			var pp = '';
 			var tem = {id:this.$route.params.id};
 			console.log('*********************');

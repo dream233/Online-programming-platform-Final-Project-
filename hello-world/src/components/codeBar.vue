@@ -1,9 +1,9 @@
 <template>
 	<div>
 		<codemirror v-model="code" :options="cmOption" />
-		<button @click="getMessage()">get</button>
+		<!-- <button @click="getMessage()">get</button>
 		<button @click="postMessage()">post</button>
-		<el-input v-model="input" placeholder="请输入内容"></el-input>
+		<el-input v-model="input" placeholder="请输入内容"></el-input> -->
 	</div>
 	
 </template>
@@ -111,16 +111,19 @@ components: examples
 	  
     },
 	
-    mounted() {
-      setTimeout(() => {
-        this.styleSelectedText = true,
-        this.cmOption.styleActiveLine = true
-      }, 1800)
-    },
 	methods: {
+		
 	    getMessage() {
-	      const path = 'http://111.229.68.117:5000/getcode';
-	      axios.get(path)
+	      const path = this.global.baseURL + ':5000/postcode';
+		  console.log("get function")
+		  var i = JSON.parse(this.$route.query.information);
+		  var room = i.roomID;
+		  var information ={
+		  	sendRoom:this.room,
+		  	type:'get'
+		  }
+		  
+	      axios.post(path,information)
 	        .then((res) => {
 	          this.code = res.data;
 	        })
@@ -131,21 +134,37 @@ components: examples
 		},
 		
 		postMessage() {
-			console.log(this.code)
-		    const path = 'http://111.229.68.117:5000/postcode';
+			// console.log(this.code)
+		    const path = this.global.baseURL + ':5000/postcode';
+			console.log("post function")
+			var i = JSON.parse(this.$route.query.information);
+			var room = i.roomID;
+			console.log('room id is'+ room)
 			var information ={
 				sendCode:this.code,
-				sendRoom:this.input
+				sendRoom:this.room,
+				type:'post'
 			}
 		    axios.post(path,information)
 			.then((res) => {
-				alert(res.data);
+				console.log(res.data);
 		    })
 		    .catch((error) => {
 		      // eslint-disable-next-line
 		      console.error(error);
 			});
 		},
+	},
+	
+	mounted() {
+		if(this.timer){
+			clearInterval(this.timer)
+		}else{
+			this.timer = setInterval(()=> {
+				this.postMessage();
+			    this.getMessage();	
+			}, 5000);
+		}
 	},
 	
 }

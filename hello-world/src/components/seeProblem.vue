@@ -33,7 +33,7 @@
 			//this.$route.params.id表示题目id
 			//this.$route.params.password表示题目密码
 			//判断是否符合，符合返回true，进入判断条件
-			const path = 'http://111.229.68.117:5000/problemCheck';
+			const path = this.global.baseURL + ':5000/problemCheck';
 			var pp = '';
 			var tem = {id:this.$route.params.id};
 			//console.log(this.$route.params.id);

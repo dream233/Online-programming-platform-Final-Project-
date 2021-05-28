@@ -109,7 +109,7 @@ export default {
         email: information.name,
         msg: data,
       };
-      const path = "http://111.229.68.117:8080/chat";
+      const path = this.global.baseURL +":8080/chat";
       axios
         .post(path, x)
         .then((res) => {

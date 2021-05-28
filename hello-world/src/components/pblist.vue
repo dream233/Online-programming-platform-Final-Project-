@@ -51,7 +51,7 @@
 				return true
 			},
 			open1(id){/////////////////////////////////////////////////////////////////////////////////////////////
-				const path = 'http://111.229.68.117:5000/problemCheck';
+				const path = this.global.baseURL + ':5000/problemCheck';
 				console.log(id);
 				var pp = '';
 				var tem = {id:id};
@@ -97,7 +97,7 @@
 				 				          });
 				 }
 				 else{
-					 const path = 'http://111.229.68.117:5000/problemCheck';
+					 const path = this.global.baseURL + ':5000/problemCheck';
 					 var tem = {id:id};
 					 axios.post(path,tem)
 					 	.then((res)=>{
@@ -146,7 +146,7 @@
 			}
 		},
 		created(){
-				const path = 'http://111.229.68.117:5000/pblist';
+				const path = this.global.baseURL + ':5000/pblist';
 				axios.get(path,this.information)
 					.then((res)=>{
 						this.tableData = res.data.pblist;
