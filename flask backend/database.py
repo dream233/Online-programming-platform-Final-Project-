@@ -1,7 +1,8 @@
 import pyodbc
 
 # db = pyodbc.connect("DRIVER={ODBC Driver 17 for SQL Server};SERVER=111.229.68.117,1433;DATABASE=online_programming_platform;UID=pyserver;PWD=1ybaHlY5xJ")
-db = pyodbc.connect("DRIVER={ODBC Driver 17 for SQL Server};SERVER=localhost;DATABASE=online_programming_platform;UID=pyserver;PWD=pyserver")
+db = pyodbc.connect("DRIVER={ODBC Driver 17 for SQL Server};SERVER=localhost;DATABASE=online_programming_platform;UID=pyserver;PWD=1ybaHlY5xJ")
+# db = pyodbc.connect("DRIVER={ODBC Driver 17 for SQL Server};SERVER=localhost;DATABASE=online_programming_platform;UID=pyserver;PWD=pyserver")
 cur = db.cursor()
 
 def create_user(userinfo:dict):
@@ -89,7 +90,7 @@ def list_problemid()->list:
         cur.rollback()
     return None
 
-def alter_problem(problem_id:str,new_problem:dict)->str:
+def alter_problem(problem_id:str,new_problem:dict)->bool:
     """修改问题
     problem_id:问题编号
     new_problem:新问题信息{owner,password,contents}
@@ -172,6 +173,7 @@ def get_comment(roomid:str)->list:
     except:
         cur.rollback()
     return None
+
 """
 info = {'roomid':'123','username':'12553','contents':'hello world'}
 prob = {'owner':'123','password':'233','contents':'fiafgoahifiuagkuhae==='}

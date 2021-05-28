@@ -1,15 +1,24 @@
 from database import match_user
 from flask import Flask, jsonify
 from flask_cors import CORS
+from uuid import uuid1
 
 from database import *
 from interface import *
+from email_sender import send_email
 
 app = Flask(__name__)
 app.config.from_object(__name__)
 
 # enable CORS
 CORS(app, supports_credentials=True)
+reg_queue = {}
+
+def user_in_reg_queue(email)->bool:
+    for it in reg_queue.values():
+        if it.get('email',0) == email:
+            return True
+    return False
 
 # 注册
 @app.route('/register',methods=['POST','GET'])
@@ -22,8 +31,12 @@ def register():
         return jsonify(resp)
     
     email = uinfo['email']
-    if not have_user(email):        # 判断用户名称是否已经存在
-        if create_user(uinfo):      # 创建用户
+    if (not have_user(email)) and (not user_in_reg_queue(email)):        # 判断用户名称是否已经存在
+        uid = uuid1().hex
+        reg_queue[uid] = uinfo
+        url = "111.229.68.117:5000/regcheck/"+uid
+        resp['message'] = 'Y'
+        if send_email(url,email):      # 发送验证邮件
             resp['message'] = 'Y'
         else:
             resp['message'] = 'N'
@@ -32,6 +45,18 @@ def register():
         resp['message'] = 'N'
         resp['error'] = '用户已经存在'
     return jsonify(resp)
+
+# 邮箱验证
+@app.route('/regcheck/<uuid>')
+def reg_check(uuid:str):
+    if uuid not in reg_queue:
+        return "验证失败"
+    uinfo =  reg_queue.get(uuid)
+    if create_user(uinfo):
+        reg_queue.pop(uuid)
+        return "验证成功"
+    else:
+        return "服务器错误！"
 
 # 登陆    
 @app.route('/login',methods=['POST','GET'])
@@ -75,10 +100,6 @@ def problemCheck():
     
     return jsonify(resp)
 
-@app.route('/addproblem',methods=['POST','GET'])
-def add_problem():
-    pass
-
 # 显示题目列表
 @app.route('/pblist', methods=['POST','GET'])
 def list_problem():
@@ -93,21 +114,70 @@ def list_problem():
     
     return jsonify(resp)
 
-# 发送接收面试题
-li = [1]
-
-@app.route('/getcode', methods=['GET'])
-def get_code():
-    return li[0]
-
-@app.route('/postcode', methods=['POST'])
-def post_code():
-    data = request.get_json()
-    if data['sendRoom'] == '200':
-        li[0] = data['sendCode']
-        return "message get"
+# 创建题目
+@app.route('/problemCreate', methods=['GET','POST'])
+def problem_create():
+    resp = {'status': 'success'}
+    prob_info = get_problem_info()
+    if create_problem(prob_info):
+        resp['message'] = 'Y'
     else:
-        return "wrong roomNum"
+        resp['message'] = 'N'
+    return jsonify(resp)
 
+# 修改题目
+@app.route('/problemEdit', methods=['GET','POST'])
+def problem_edit():
+    resp = {'status': 'success'}
+    prob_info = get_problem_info()
+    if alter_problem(prob_info['id'],prob_info):
+        resp['message'] = 'Y'
+    else:
+        resp['message'] = 'N'
+    return jsonify(resp)
+
+# 发送接收面试代码
+code_list = {'666':'print(hello world)'}
+@app.route('/postcode', methods=['POST','GET'])
+def post_code():
+    data = get_code_info()
+    if data['type'] == 'get':           # get表示请求代码
+        if data.get('sendRoom',False):
+            code = code_list[data.get('sendRoom')]
+        else:
+            code = "wrong roomNum"
+        return code
+    elif data['type'] == 'post':        # post表示提交代码
+        if data.get('sendRoom',False):
+            code_list[data.get('sendRoom')] = data.get('sendCode','')
+            return "sucess"
+    return "error"
+
+# 创建房间，获取历史记录
+@app.route('/createroom', methods=['GET','POST'])
+def create_room():
+    resp = {'status': 'success'}
+    data = get_room_info()
+    roomid = data['roomid']
+    if have_chatroom(roomid):
+        resp['message'] = 'N'
+        create_chatroom(roomid)
+    else:
+        history = get_comment(roomid)
+        resp['message'] = 'Y'
+        resp['chathistory'] = history
+    return jsonify(resp)
+
+# 添加聊天记录
+@app.route('/chat', methods=['GET','POST'])
+def add_history():
+    resp = {'status': 'success'}
+    data = get_chat_info()
+    if add_comment(data):
+        return jsonify(resp)
+    else:
+        return jsonify({'status': 'error'})
+    
 if __name__=='__main__':
     app.run(host='0.0.0.0',port=5000,debug=True)
+    
