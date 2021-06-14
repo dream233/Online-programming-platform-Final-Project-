@@ -238,7 +238,6 @@
                 );
 			},
 			joinRoom(roomForm){
-				// alert(x)
 				this.$refs[roomForm].validate((valid) => 
                     {
                         if (valid) 
@@ -251,8 +250,7 @@
 								x = {roomID:this.roomForm_C.roomID};
 								
 							}
-							console.log(x)
-							alert(x)
+							
 							//往后端发送roomID 的代码
 							const path = this.global.baseURL + ':5000/joinroom';
 							axios.post(path,x)

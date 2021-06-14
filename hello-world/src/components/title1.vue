@@ -30,7 +30,8 @@
 	      return {
 	        activeIndex: '1',
 	        activeIndex2: '1',
-			containerShow: '1'
+			containerShow: '1',
+			information:{},
 	      };
 	    },
 	    methods: {
@@ -62,13 +63,16 @@
 				  this.moveto('/loginSuccess/problemCreate');
 			  }
 		  },
-		  test(){
-			  var information = this.$route.query.information;
-			  information = JSON.parse(information);
-			  
+		  test(){		  
+			  var information = this.information;
 			  alert("当前用户邮箱："+ information.name + "用户名： " + information.username + "用户身份： " + information.id)
 		  }
-	    }
+	    },
+		created(){		
+		  var information = JSON.parse(this.$route.query.information);
+		  this.information =information	  
+		}
+		
 	  }
 </script>
 

@@ -38,12 +38,13 @@
 	    },
 		methods: {
 			moveto(path){
-				var information = this.$route.query.information;
+				var information = JSON.stringify(this.$route.query.information);
+				
 				this.$router.push({
-								  path: path,
-								  query: {
-									  information
-								  }
+					  path: path,
+					  query: {
+						  information
+					  }
 				});
 				
 			},
@@ -127,7 +128,7 @@
 											 type: 'success',
 											 message: '题目id为' + id
 										   });
-		
+										   console.log(information)
 											this.moveto('/loginSuccess/problemEditor/'+id+'/'+value);
 										 }).catch(() => {
 										   this.$message({

@@ -1,4 +1,12 @@
 <template>
+</template>
+
+<script>
+</script>
+
+<style>
+</style>
+<template>
 
 	<div class="ql-container ql-snow">
 	    <div class="ql-editor">

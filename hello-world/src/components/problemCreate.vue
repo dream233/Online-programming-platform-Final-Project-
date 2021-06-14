@@ -100,10 +100,12 @@
 	        onEditorFocus(){}, // 获得焦点事件
 	        onEditorChange(){}, // 内容改变事件
 			saveHtml(){
-				var information = this.$route.query.information;
-				information = JSON.parse(information);
-				const path = this.global.baseURL + ':5000/problemCreate';
-				var probleminfor = {id:this.pinformation.id,password:this.pinformation.password,owner:information.name,contents:this.content};
+				var information = JSON.parse(this.$route.query.information);
+				const path = this.global.baseURL + ':5000/problemEdit';
+				var probleminfor = {
+					ProblemID:this.$route.params.id,
+					contents:this.content,
+				};
 				axios.post(path,probleminfor)
 					.then((res)=>{
 						if(res.data.message=='Y'){

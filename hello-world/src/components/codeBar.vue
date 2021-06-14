@@ -119,7 +119,7 @@ components: examples
 		  var i = JSON.parse(this.$route.query.information);
 		  var room = i.roomID;
 		  var information ={
-		  	sendRoom:this.room,
+		  	sendRoom:room,
 		  	type:'get'
 		  }
 		  
@@ -134,17 +134,17 @@ components: examples
 		},
 		
 		postMessage() {
-			// console.log(this.code)
 		    const path = this.global.baseURL + ':5000/postcode';
 			// console.log("post function")
 			var i = JSON.parse(this.$route.query.information);
 			var room = i.roomID;
-			console.log('room id is'+ room)
+			// console.log('room id is'+ room)
 			var information ={
 				sendCode:this.code,
-				sendRoom:this.room,
+				sendRoom:room,
 				type:'post'
 			}
+			// console.log(information)
 		    axios.post(path,information)
 			.then((res) => {
 				console.log(res.data);
@@ -156,16 +156,17 @@ components: examples
 		},
 	},
 	
-	// mounted() {
-	// 	if(this.timer){
-	// 		clearInterval(this.timer)
-	// 	}else{
-	// 		this.timer = setInterval(()=> {
-	// 			this.postMessage();
-	// 		    this.getMessage();	
-	// 		}, 5000);
-	// 	}
-	// },
+	mounted() {
+		if(this.timer){
+			clearInterval(this.timer)
+		}else{
+			this.timer = setInterval(()=> {
+				this.postMessage();
+			    this.getMessage();	
+			}, 5000);
+		}
+	},
+	
 	
 }
 </script>

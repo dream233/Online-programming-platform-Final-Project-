@@ -82,10 +82,13 @@
 			  // console.log(this.content);
 	    //     },
 			saveHtml(){
-				var information = this.$route.query.information;
-				information = JSON.parse(information);
+				var information = JSON.parse(this.$route.query.information);
 				const path = this.global.baseURL + ':5000/problemEdit';
-				var probleminfor = {id:this.information.id,password:this.information.password,owner:information.name,contents:this.content};
+				var probleminfor = {
+					ProblemID:this.$route.params.id,
+					contents:this.content,
+				};
+				// console.log(probleminfor)
 				axios.post(path,probleminfor)
 					.then((res)=>{
 						if(res.data.message=='Y'){
