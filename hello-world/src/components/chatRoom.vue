@@ -65,7 +65,7 @@ export default {
   
   // 创建
   created() {
-    this.socket = socketio("http://111.229.68.117:5000");
+    this.socket = socketio(this.global.baseURL + ":5000");
     var information = JSON.parse(this.$route.query.information);
     this.roomID = information.roomID;
     const IDdata = {
@@ -105,29 +105,14 @@ export default {
       var information = JSON.parse(this.$route.query.information);
       const transdata = {
         msg: data,
+		email: information.name,
+		roomID: this.roomID,
         username: information.id,
       };
       if (data) {
         this.socket.emit("msg", transdata);
         this.msg = "";
       }
-      //往后端发送roomID 的代码
-      var x = {
-        roomID: this.roomID,
-        username: information.id,
-        email: information.name,
-        msg: data,
-      };
-      const path = this.global.baseURL +":5000/chat";
-      axios
-        .post(path, x)
-        .then((res) => {
-          console.log("成功发送数据");
-          console.log(res);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
     },
   },
 };

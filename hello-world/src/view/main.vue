@@ -124,10 +124,10 @@
 			}
 		},
 		created() {
-			console.log('main create')
+			// console.log('main create')
 			var information = JSON.parse(this.$route.query.information);
-			console.log(information.roomID);
-			console.log(information.history)
+			// console.log(information.roomID);
+			// console.log(information.history)
 
 			//已经输入过房间号
 			if(information.roomID!=='0'){
@@ -141,7 +141,10 @@
 				else if(this.roomForm_I.roomID===''){
 					x = {roomID:this.roomForm_C.roomID};
 				}
-				x=information.roomID;
+				x = {
+					roomID:information.roomID,
+				}
+				
 				const path = 'http://111.229.68.117:5000/joinroom';
 				axios.post(path,x)
 								.then((res)=>{
@@ -235,6 +238,7 @@
                 );
 			},
 			joinRoom(roomForm){
+				// alert(x)
 				this.$refs[roomForm].validate((valid) => 
                     {
                         if (valid) 
@@ -245,7 +249,10 @@
 							}
 							else if(this.roomForm_I.roomID===''){
 								x = {roomID:this.roomForm_C.roomID};
+								
 							}
+							console.log(x)
+							alert(x)
 							//往后端发送roomID 的代码
 							const path = this.global.baseURL + ':5000/joinroom';
 							axios.post(path,x)
@@ -261,6 +268,7 @@
 										this.show_candidate=false
 										this.show_home=true
 										this.moveto('/loginSuccess/main');
+										console.log(this.history)
 										
 										location.reload();
 									}

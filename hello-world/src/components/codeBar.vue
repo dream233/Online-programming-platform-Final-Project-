@@ -156,16 +156,16 @@ components: examples
 		},
 	},
 	
-	mounted() {
-		if(this.timer){
-			clearInterval(this.timer)
-		}else{
-			this.timer = setInterval(()=> {
-				this.postMessage();
-			    this.getMessage();	
-			}, 5000);
-		}
-	},
+	// mounted() {
+	// 	if(this.timer){
+	// 		clearInterval(this.timer)
+	// 	}else{
+	// 		this.timer = setInterval(()=> {
+	// 			this.postMessage();
+	// 		    this.getMessage();	
+	// 		}, 5000);
+	// 	}
+	// },
 	
 }
 </script>
