@@ -4,21 +4,23 @@
       <h4 class="header-text">ChatRoom:{{ roomID }}</h4>
     </div>
     <div class="body">
-      <div v-for="(item, index) in msgs" :key="index">
-        <div v-if="item.msgType == 'clientMsg'" class="clientMsg">
+      <!-- 记录 -->
+      <div v-for="(item, ind) in history" :key="ind">
+        <div class="clientMsg">
           <div class="sysTime">{{ item.time }}</div>
+
           <div
-            v-if="item.username == JSON.parse($route.query.information).id"
+            v-if="item.email == JSON.parse($route.query.information).name"
             class="self"
           >
             <div class="bubble">
               <div class="chatBubble">{{ item.msg }}</div>
               <div class="triangle"></div>
             </div>
-            <div class="user">{{ item.username }}</div>
+            <div class="user">{{ item.email }}</div>
           </div>
           <div v-else class="others">
-            <div class="user">{{ item.username }}</div>
+            <div class="user">{{ item.email }}</div>
             <div class="bubble">
               <div class="chatBubble">{{ item.msg }}</div>
               <div class="triangle"></div>
@@ -28,7 +30,6 @@
       </div>
     </div>
     <!--发送内容-->
-    <!--   class='msgInput'-->
     <div class="beforeInput"></div>
     <div class="msgInput">
       <textarea
@@ -38,6 +39,7 @@
         type="text"
         placeholder="请输入会话内容"
         @keydown.enter="send(msg)"
+        maxlength="20"
       />
       <button class="sendBtn" id="serviceSendBtn">Enter</button>
     </div>
@@ -60,9 +62,9 @@ export default {
       msgs: storage.fetch(),
       roomID: "0",
       msgID: {},
+      history: storage.fetch(),
     };
   },
-  
   // 创建
   created() {
     this.socket = socketio(this.global.baseURL + ":5000");
@@ -70,28 +72,45 @@ export default {
     this.roomID = information.roomID;
     const IDdata = {
       roomID: this.roomID,
-      username: information.id,
+      username: information.username,
     };
-	
-	// 成功进入房间，调用joinRoom
+    var x = {
+      roomID: information.roomID,
+    };
+    var that = this;
+    const path = "http://111.229.68.117:5000/joinroom";
+    axios
+      .post(path, x)
+      .then((res) => {
+        // 发送roomID给后端，获取聊天记录
+        this.history = res.data.chathistory;
+        that.history = res.data.chathistory;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    console.log(this);
+    // 成功进入房间，调用joinRoom
     if (this.roomID && information.id) {
       this.socket.emit("joinRoom", IDdata);
     } else {
       this.$router.push("/");
     }
-	
-	// 监听服务器回传的信息
+
+    // 监听服务器回传的信息
     this.socket.on("broadcastMsg", (data) => {
-      this.msgs.push({
+      this.history.push({
         msgType: "clientMsg",
-        username: data.username,
+        email: data.email,
         msg: data.msg,
         time: moment().format("HH:mm:ss"),
       });
-      storage.save(this.msgs);
+
+      storage.save(this.history);
     });
   },
-  
+
   // 重新调用DOM时，回到聊天室最上方
   updated() {
     this.$nextTick(() => {
@@ -99,15 +118,14 @@ export default {
       oBody.scrollTop = oBody.scrollHeight;
     });
   },
-  
+
   methods: {
     send(data) {
       var information = JSON.parse(this.$route.query.information);
       const transdata = {
         msg: data,
-		email: information.name,
-		roomID: this.roomID,
-        username: information.id,
+        email: information.name,
+        roomID: this.roomID
       };
       if (data) {
         this.socket.emit("msg", transdata);
@@ -129,8 +147,9 @@ export default {
   right: 10px;
   color: white;
 }
-input:focus, textarea:focus {
-    outline: none;
+input:focus,
+textarea:focus {
+  outline: none;
 }
 .chatroom {
   position: relative;
@@ -230,7 +249,7 @@ input:focus, textarea:focus {
   height: 200px;
   border: 1px solid #eee;
   font-family: normal;
-  padding:15px;
+  padding: 15px;
   background-color: rgb(246, 247, 250);
   font-size: 16px;
   caret-color: rgb(62, 141, 231);
