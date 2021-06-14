@@ -138,7 +138,7 @@ def create_chatroom(roomid:str)->bool:
     return:bool
     """
     try:
-        cur.execute("insert into chatroom(room_id) values(?)",roomid)
+        cur.execute("insert into chatrooms(room_id) values(?)",roomid)
         db.commit()
     except:
         cur.rollback()

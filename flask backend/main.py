@@ -1,3 +1,4 @@
+from werkzeug import debug
 from database import match_user
 from flask import Flask, jsonify
 from flask_cors import CORS
@@ -7,8 +8,12 @@ from database import *
 from interface import *
 from email_sender import send_email
 
+from flask_socketio import SocketIO, emit, disconnect, join_room, leave_room
+
 app = Flask(__name__)
 app.config.from_object(__name__)
+app.config['SECRET_KEY'] = 'secret!'
+socketio = SocketIO(app, cors_allowed_origins='*')
 
 # enable CORS
 CORS(app, supports_credentials=True)
@@ -159,9 +164,23 @@ def create_room():
     resp = {'status': 'success'}
     data = get_room_info()
     roomid = data['roomid']
-    if have_chatroom(roomid):
-        resp['message'] = 'N'
+    if not have_chatroom(roomid):
         create_chatroom(roomid)
+        resp['message'] = 'N'
+    else:
+        history = get_comment(roomid)
+        resp['message'] = 'Y'
+        resp['chathistory'] = history
+    return jsonify(resp)
+
+# 加入房间，获取历史记录
+@app.route('/joinroom',methods=['GET','POST'])
+def join_room():
+    resp = {'status': 'success'}
+    data = get_room_info()
+    roomid = data['roomid']
+    if not have_chatroom(roomid):
+        resp['message'] = 'N'
     else:
         history = get_comment(roomid)
         resp['message'] = 'Y'
@@ -177,7 +196,24 @@ def add_history():
         return jsonify(resp)
     else:
         return jsonify({'status': 'error'})
+
+room_list = {}
+@socketio.on('joinRoom')
+def on_join(data):
+    username = data['username']
+    room = data['roomID']
+    join_room(room)
+    print('username: '+username+', 加入 '+room+' 房间!')
+
+@socketio.on('msg')
+def on_msg(data):
+    username = data['username']
+    userid = data['id']
+    msg = data['msg']
+    emit('broadcastMsg', data, broadcast=True)
+    
+    print('username: ' + username + 'userid: ' + userid + '发送的消息是' + msg)
     
 if __name__=='__main__':
-    app.run(host='0.0.0.0',port=5000,debug=True)
+    socketio.run(app, port=5000,debug=True, host='0.0.0.0')
     

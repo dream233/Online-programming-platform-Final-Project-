@@ -39,7 +39,7 @@
 			  <!-- 按钮 -->
 			  <el-form-item>
 				  <el-button type="primary" @click="loginning('information')">登录</el-button>
-				  <el-button @click="moveto('/register')">注册</el-button>
+				  <el-button @click="moveto2('/register')">注册</el-button>
 			  </el-form-item>
 			</el-form>
 
@@ -83,6 +83,9 @@ import axios from 'axios';
 								  information
 							  }
 						  });
+			},
+			moveto2(path){
+				this.$router.push(path);
 			},
             loginning(formName) 
             {

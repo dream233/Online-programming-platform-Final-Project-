@@ -85,7 +85,7 @@
 				var information = this.$route.query.information;
 				information = JSON.parse(information);
 				const path = this.global.baseURL + ':5000/problemEdit';
-				var probleminfor = {id:this.pinformation.id,password:this.pinformation.password,owner:information.name,contents:this.content};
+				var probleminfor = {id:this.information.id,password:this.information.password,owner:information.name,contents:this.content};
 				axios.post(path,probleminfor)
 					.then((res)=>{
 						if(res.data.message=='Y'){

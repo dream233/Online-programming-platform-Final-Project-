@@ -48,12 +48,10 @@
 				  </el-form-item>
 				  
 				  <!-- 身份 -->
-				  <el-form-item
-				      label="身份"
-				      prop="id"
-				  >
-				      <el-input placeholder="请输入您的身份(candidate或interviewer)" type="id" v-model="information.id" autocomplete="off"></el-input>
-				  </el-form-item>
+				  <div align="middle">
+				  				  <el-radio v-model="information.id" label="candidate">候选人</el-radio>
+				  				  <el-radio v-model="information.id" label="interviewer">面试官</el-radio>
+				  </div>
 
                   <!-- 按钮 -->
                   <el-form-item>
@@ -168,7 +166,10 @@
 	        	},
 				submitForm(formName) {
 				    this.$refs[formName].validate((valid) => {
-						
+						if(this.information.id==''){
+							alert('未选择身份！');
+							valid=!valid;
+						}
 						if(valid){
 							console.log('y')
 							const path = 'http://111.229.68.117:5000/register';

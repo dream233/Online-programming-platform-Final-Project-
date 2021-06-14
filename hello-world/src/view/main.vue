@@ -72,7 +72,7 @@
 				<el-container>
 					<!--  -->
 					<el-aside width="200px">
-						<seeProblem></seeProblem>
+						<seeProblem2></seeProblem2>
 					</el-aside>
 					
 						<el-container>
@@ -100,7 +100,7 @@
 </template>
 
 <script>
-	import seeProblem from '../components/seeProblem.vue'
+	import seeProblem2 from '../components/seeProblem.vue'
 	import title1 from '../components/title1.vue'
 	import codeBar from '../components/codeBar.vue'
 	import chatRoom from '../components/chatRoom.vue'
@@ -141,7 +141,8 @@
 				else if(this.roomForm_I.roomID===''){
 					x = {roomID:this.roomForm_C.roomID};
 				}
-				const path = 'http://111.229.68.117:5000/createroom';
+				x=information.roomID;
+				const path = 'http://111.229.68.117:5000/joinroom';
 				axios.post(path,x)
 								.then((res)=>{
 									//房间号已存在
@@ -175,6 +176,7 @@
 					name: information.name,
 					username:information.username,
 					id: information.id,
+					roomID: '',
 				}
 				
 				if(information.id === 'candidate'){
@@ -245,7 +247,7 @@
 								x = {roomID:this.roomForm_C.roomID};
 							}
 							//往后端发送roomID 的代码
-							const path = this.global.baseURL + ':5000/createroom';
+							const path = this.global.baseURL + ':5000/joinroom';
 							axios.post(path,x)
 								.then((res)=>{
 									//房间号已存在
@@ -282,7 +284,7 @@
 			title1,
 			codeBar,
 			chatRoom,
-			seeProblem
+			seeProblem2
 		}
 	}
 </script>
