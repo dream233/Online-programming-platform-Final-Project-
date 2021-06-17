@@ -67,9 +67,9 @@
 				</el-row>
 			</div>		
 			<!-- 主页面模块 -->
-			<div v-show="show_home">
+			<div v-show="show_home" >
 
-				<el-container>
+				<el-container >
 					<!--  -->
 					<el-aside width="200px">
 						<seeProblem2></seeProblem2>
@@ -79,7 +79,7 @@
 						<el-header>虚假的牛客网站，贼牛xxxxxx</el-header>
 						
 						<!-- 代码框的位置 -->
-						<code-bar></code-bar>
+						<code-bar height='900px'></code-bar>
 						
 						<el-footer>联系方式：13535549796</el-footer>
 						
@@ -297,45 +297,46 @@
 
 <style>
 .box {
-  width: 480px;
-  height: 100px;
+	width: 480px;
+	height: 100px;
 
-  border-radius: 20px;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+	border-radius: 20px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
 }
 .btns {
-  display: flex;
-  justify-content: flex-end;
+	display: flex;
+	justify-content: flex-end;
 }
-	.el-header, .el-footer {
-	    background-color: #B3C0D1;
-	    color: #333;
-	    text-align: center;
-	    line-height: 60px;
-	  }
-	  
-	  .el-aside {
-	    background-color: #D3DCE6;
-	    color: #333;
-	    text-align: center;
-	    /* line-height: 200px; */
-		
-		height: calc(100vh-160px); /* 这是侧框的滚动条*/
-	  }
-	  
-	  .el-main {
-	    background-color: #E9EEF3;
-	    color: #333;
-	    text-align: center;
-	    line-height: 160px;
-	  }
-	  
-	  body > .el-container {
-	    margin-bottom: 40px;
-	  }
-	  
+.el-header, .el-footer {
+	background-color: #B3C0D1;
+	color: #333;
+	text-align: center;
+	line-height: 60px;
+}
+
+.el-aside {
+	background-color: #D3DCE6;
+	color: #333;
+	text-align: center;
+	/* line-height: 200px; */
+
+	height: calc(100vh-160px); /* 这是侧框的滚动条*/
+}
+
+.el-main {
+	background-color: #E9EEF3;
+	color: #333;
+	text-align: center;
+	line-height: 160px;
+}
+
+body > .el-container {
+	margin-bottom: 40px;
+	height: auto;
+}
+
 	  
 </style>

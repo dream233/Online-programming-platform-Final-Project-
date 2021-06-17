@@ -106,7 +106,10 @@ components: examples
           theme: "monokai",
           extraKeys: { "Ctrl": "autocomplete" }
         },
-		input:'dasda'
+		
+		input:'dasda',
+		codeLength:0,
+		
       }
 	  
     },
@@ -134,6 +137,7 @@ components: examples
 		},
 		
 		postMessage() {
+			
 		    const path = this.global.baseURL + ':5000/postcode';
 			// console.log("post function")
 			var i = JSON.parse(this.$route.query.information);
@@ -144,28 +148,50 @@ components: examples
 				sendRoom:room,
 				type:'post'
 			}
+			this.codeLength = this.code.length
 			// console.log(information)
 		    axios.post(path,information)
 			.then((res) => {
-				console.log(res.data);
+				// console.log(res.data);
 		    })
 		    .catch((error) => {
 		      // eslint-disable-next-line
 		      console.error(error);
 			});
 		},
-	},
-	
-	mounted() {
-		if(this.timer){
-			clearInterval(this.timer)
-		}else{
-			this.timer = setInterval(()=> {
+		
+		checkLength(){
+			// console.log(' last is ' + this.codeLength + ' now is ' + this.code.length);
+			if(this.codeLength != this.code.length)
+			{
 				this.postMessage();
-			    this.getMessage();	
-			}, 5000);
-		}
+				setTimeout(this.postMessage(),200);
+			}
+		},
+		
+	
 	},
+	mounted() {
+			if(this.timer){
+				clearInterval(this.timer)
+			}else{
+				this.timer = setInterval(()=> {
+					this.checkLength();
+				}, 500);
+				this.timer = setInterval(()=> {
+				    this.getMessage();	
+				}, 3000);
+			}
+		},
+	
+	created(){
+		this.getMessage()
+	},
+	destroyed() {
+		// 每次离开当前界面时，清除定时器
+		clearInterval(this.timer)
+		this.timer = null
+	}
 	
 	
 }
@@ -182,5 +208,15 @@ components: examples
   }
   .CodeMirror-selection-highlight-scrollbar {
     background-color: green;
+  }
+  .CodeMirror {
+	  border: 1px solid #eee;
+	  height: auto !important;
+  }
+
+  .CodeMirror-scroll {
+	  height: auto;
+	  overflow-y: hidden;
+	  overflow-x: auto;
   }
 </style>

@@ -9,7 +9,7 @@
 		  text-color="#fff"
 		  active-text-color="#ffd04b">
 		  <el-menu-item index="1" @click="moveto('/loginSuccess')">首页</el-menu-item>
-		  <el-menu-item index="2" @click="moveto('/loginSuccess/main')">联系人</el-menu-item>
+		  <el-menu-item index="2" @click="moveto('/loginSuccess/main')">加入面试房间</el-menu-item>
 		  <el-submenu index="3">
 			  <template slot="title">
 				  面试题
