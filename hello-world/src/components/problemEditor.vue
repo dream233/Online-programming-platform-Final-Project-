@@ -77,6 +77,17 @@
 	        onEditorBlur(){}, // 失去焦点事件
 	        onEditorFocus(){}, // 获得焦点事件
 	        onEditorChange(){}, // 内容改变事件
+			moveto(path){
+				var information = this.$route.query.information;
+				// console.log(information);
+				this.$router.push({
+					  path: path,
+					  query: {
+						  information
+					  }
+				});
+				
+			},
 	    //     saveHtml:function(event){
 	    //       alert(this.content);
 			  // console.log(this.content);
@@ -97,6 +108,7 @@
 							          message: '题目修改成功',
 							          type: 'success'
 							        });
+							this.moveto("/loginSuccess/pblist");
 						}
 						else{
 							this.$message({

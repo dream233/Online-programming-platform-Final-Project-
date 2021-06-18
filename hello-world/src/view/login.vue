@@ -40,6 +40,7 @@
 			  <el-form-item>
 				  <el-button type="primary" @click="loginning('information')">登录</el-button>
 				  <el-button @click="moveto2('/register')">注册</el-button>
+				  <el-button @click="moveto2('/forgetpwd')">忘记密码</el-button>
 			  </el-form-item>
 			</el-form>
 
@@ -74,7 +75,8 @@ import axios from 'axios';
 							  name: this.information.name,
 							  username:this.information.username,
 							  id: this.information.id,
-							  roomID: '0'
+							  roomID: '0',
+							  problemid: '0'
 						  };
 						  information = JSON.stringify(information);
 						  this.$router.push({
@@ -97,11 +99,11 @@ import axios from 'axios';
 							axios.post(path,this.information)
 								.then((res)=>{
 									if(res.data.message=='Y'){
-										console.log('move');
+										// console.log('move');
 										this.moveto('/loginSuccess');
 									}
 									else{
-										alert('请检查用户名、密码和身份后再试！');
+										this.$message.error('请检查用户名、密码和身份后再试！');
 									}
 								})
 								.catch((error)=>{

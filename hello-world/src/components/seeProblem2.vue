@@ -12,8 +12,8 @@
 	    <div class="ql-editor">
 			<!-- <button @click="t">点击这里显示题目</button> -->
 			<el-row>
-				<el-input v-model="input" placeholder="请输入题目id"></el-input>
-				<el-button type="success" icon="el-icon-check" circle></el-button>
+				<el-input v-model="problemid" placeholder="请输入题目id"></el-input>
+				<el-button type="success" icon="el-icon-check" circle @click="seeProblem()"></el-button>
 			</el-row>
 			<p v-html="message"></p>
 	    </div>
@@ -31,13 +31,33 @@
 	export default{
 		data(){
 			return{
-				message: '<p>题目未响应，信息有误！</p>'
+				message: '<p>题目未响应，信息有误！</p>',
+				problemid: ''
 			}
 		},
 		methods:{
 			// t(){
 			// 	this.message=''
 			// }
+			seeProblem(){
+				var information = JSON.parse(this.$route.query.information);
+				
+				information = {
+					name: information.name,
+					username:information.username,
+					id: information.id,
+					roomID: information.roomID,
+					problemid: this.problemid
+				};
+				information=JSON.stringify(information);
+				this.$router.push({
+					path: '/loginSuccess/main',
+					query: {
+						information
+					}
+				});
+				location.reload();
+			}
 		},
 		created(){
 			window.that=this;
@@ -45,19 +65,15 @@
 			//this.$route.params.id表示题目id
 			//this.$route.params.password表示题目密码
 			//判断是否符合，符合返回true，进入判断条件
+			var information = JSON.parse(this.$route.query.information);
 			const path = this.global.baseURL + ':5000/problemCheck';
-			var pp = '';
-			var tem = {id:this.$route.params.id};
+			var tem = {id:information.problemid};
 			//console.log(this.$route.params.id);
-			console.log('seeProblem');
+			// console.log('seeProblem');
 			axios.post(path,tem)
 				.then((res)=>{
-					pp=res.data.password;
-					if(this.$route.params.password==pp){
-						
-						//如果符合，那么调用题目内容（即一大串字符串），然后this.message=内容（下面那些内容用于测试，可以删掉）
-						this.message= res.data.contents;
-					}
+					//如果符合，那么调用题目内容（即一大串字符串），然后this.message=内容（下面那些内容用于测试，可以删掉）
+					this.message= res.data.contents;
 				});
 			
 		}

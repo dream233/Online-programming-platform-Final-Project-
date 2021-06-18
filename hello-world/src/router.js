@@ -10,6 +10,7 @@ import hellovisit from './components/hellovisit.vue'
 import pblist from './components/pblist.vue'
 import seeProblem from './components/seeProblem.vue'
 import problemCreate from './components/problemCreate.vue'
+import forgetpwd from './view/forgetpwd.vue'
 
 Vue.use(VueRouter)
 
@@ -24,6 +25,11 @@ const router = new VueRouter({
 			path:'/',
 			name:'login',
 			component:login			
+		},
+		{
+			path:'/forgetpwd',
+			name:'forgetpwd',
+			component:forgetpwd
 		},
 		{
 			path:'/main',

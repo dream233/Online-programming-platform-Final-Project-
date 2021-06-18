@@ -37,7 +37,7 @@
 			var pp = '';
 			var tem = {id:this.$route.params.id};
 			//console.log(this.$route.params.id);
-			console.log('seeProblem');
+			// console.log('seeProblem');
 			axios.post(path,tem)
 				.then((res)=>{
 					pp=res.data.password;

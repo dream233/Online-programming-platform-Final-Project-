@@ -17,10 +17,10 @@
               <div class="chatBubble">{{ item.msg }}</div>
               <div class="triangle"></div>
             </div>
-            <div class="user">{{ item.email }}</div>
+            <div class="user">{{ item.email.substring(0, 5) }}</div>
           </div>
           <div v-else class="others">
-            <div class="user">{{ item.email }}</div>
+            <div class="user">{{ item.email.substring(0, 5) }}</div>
             <div class="bubble">
               <div class="chatBubble">{{ item.msg }}</div>
               <div class="triangle"></div>
@@ -41,7 +41,7 @@
         @keydown.enter="send(msg)"
         maxlength="20"
       />
-      <button class="sendBtn" id="serviceSendBtn">Enter</button>
+      <button class="sendBtn" id="serviceSendBtn" @click="send(msg)" >Enter</button>
     </div>
   </div>
 </template>

@@ -38,8 +38,8 @@
 	    },
 		methods: {
 			moveto(path){
-				var information = JSON.stringify(this.$route.query.information);
-				
+				var information = this.$route.query.information;
+				// console.log(information);
 				this.$router.push({
 					  path: path,
 					  query: {

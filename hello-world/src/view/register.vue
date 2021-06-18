@@ -167,7 +167,10 @@
 				submitForm(formName) {
 				    this.$refs[formName].validate((valid) => {
 						if(this.information.id==''){
-							alert('未选择身份！');
+							this.$message({
+							          message: '未选择身份！',
+							          type: 'warning'
+							        });
 							valid=!valid;
 						}
 						if(valid){
@@ -176,12 +179,18 @@
 							axios.post(path,this.information)
 								.then((res)=>{
 									if(res.data.message=='Y'){
-										alert('注册成功！！！！');
+										this.$message({
+										          message: '注册成功！请前往邮箱激活！',
+										          type: 'success'
+										        });
 										this.moveto('/');
 									}
 									else if(res.data.message=='N'){
 										this.resetForm('information');
-										alert('用户名重复，请重新注册！');
+										this.$message({
+										          message: '邮箱重复，请重新注册！',
+										          type: 'warning'
+										        });
 									}
 								})
 								.catch((error)=>{

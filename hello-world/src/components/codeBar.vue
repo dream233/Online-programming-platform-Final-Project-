@@ -48,6 +48,7 @@
   import'codemirror/addon/fold/indent-fold.js'
   import'codemirror/addon/fold/markdown-fold.js'
   import'codemirror/addon/fold/xml-fold.js'
+  // let CodeMirror = require('codemirror/lib/codemirror')
   
   import axios from 'axios'
   import qs from 'qs'
@@ -94,6 +95,7 @@ components: examples
           gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
           highlightSelectionMatches: { showToken: /\w/, annotateScrollbar: true },
           mode: 'text/javascript',
+		  // resetSelectionOnContextMenu:false,
           // hint.js options
           hintOptions:{
             // 当匹配只有一项的时候是否自动补全
@@ -113,10 +115,16 @@ components: examples
       }
 	  
     },
+	// computed: {
+	//     codemirror() {
+	//       return this.$refs.myCm.codemirror
+	//     }
+	//   },
 	
 	methods: {
 		
 	    getMessage() {
+		  // console.log(this.codemirror.getCursor())
 	      const path = this.global.baseURL + ':5000/postcode';
 		  // console.log("get function")
 		  var i = JSON.parse(this.$route.query.information);
@@ -126,6 +134,7 @@ components: examples
 		  	type:'get'
 		  }
 		  
+		  // console.log("in get");
 	      axios.post(path,information)
 	        .then((res) => {
 	          this.code = res.data;
@@ -138,6 +147,7 @@ components: examples
 		
 		postMessage() {
 			
+			// console.log("in post");
 		    const path = this.global.baseURL + ':5000/postcode';
 			// console.log("post function")
 			var i = JSON.parse(this.$route.query.information);
@@ -177,10 +187,10 @@ components: examples
 			}else{
 				this.timer = setInterval(()=> {
 					this.checkLength();
-				}, 500);
+				}, 1000);
 				this.timer = setInterval(()=> {
 				    this.getMessage();	
-				}, 3000);
+				}, 5000);
 			}
 		},
 	
@@ -192,6 +202,7 @@ components: examples
 		clearInterval(this.timer)
 		this.timer = null
 	}
+	
 	
 	
 }
@@ -211,11 +222,11 @@ components: examples
   }
   .CodeMirror {
 	  border: 1px solid #eee;
-	  height: auto !important;
+	  height: 500px !important;
   }
 
   .CodeMirror-scroll {
-	  height: auto;
+	  height: 500px;
 	  overflow-y: hidden;
 	  overflow-x: auto;
   }

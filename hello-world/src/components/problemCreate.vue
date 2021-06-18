@@ -11,7 +11,7 @@
 					<el-button type="primary" @click="dialogFormVisible = true">创建<i class="el-icon-upload el-icon--right"></i></el-button>
 					
 					<el-dialog title="题目信息(用于创建题目权限)" :visible.sync="dialogFormVisible">
-					  <el-form :model="information">
+					  <el-form >
 					    <el-form-item label="题目id" :label-width="formLabelWidth">
 					      <el-input type="text" placeholder="请输入8位数字id" 
 						  v-model="pinformation.id" show-word-limit autocomplete="off" maxlength="8"></el-input>
@@ -99,13 +99,27 @@
 	        onEditorBlur(){}, // 失去焦点事件
 	        onEditorFocus(){}, // 获得焦点事件
 	        onEditorChange(){}, // 内容改变事件
+			moveto(path){
+				var information = this.$route.query.information;
+				// console.log(information);
+				this.$router.push({
+					  path: path,
+					  query: {
+						  information
+					  }
+				});
+				
+			},
 			saveHtml(){
 				var information = JSON.parse(this.$route.query.information);
-				const path = this.global.baseURL + ':5000/problemEdit';
+				// console.log(information)
+				const path = this.global.baseURL + ':5000/problemCreate';
 				var probleminfor = {
-					ProblemID:this.$route.params.id,
+					id:this.pinformation.id,
+				    password:this.pinformation.password,
+					owner:information.name,
 					contents:this.content,
-				};
+					};
 				axios.post(path,probleminfor)
 					.then((res)=>{
 						if(res.data.message=='Y'){
@@ -114,6 +128,7 @@
 							          message: '题目创建成功',
 							          type: 'success'
 							        });
+							this.moveto("/loginSuccess/pblist");
 						}
 						else{
 							this.$message({

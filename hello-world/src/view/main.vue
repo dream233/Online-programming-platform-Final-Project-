@@ -100,7 +100,8 @@
 </template>
 
 <script>
-	import seeProblem2 from '../components/seeProblem.vue'
+	import seeProblem2 from '../components/seeProblem2.vue'
+	import seeProblem from '../components/seeProblem.vue'
 	import title1 from '../components/title1.vue'
 	import codeBar from '../components/codeBar.vue'
 	import chatRoom from '../components/chatRoom.vue'
@@ -180,6 +181,7 @@
 					username:information.username,
 					id: information.id,
 					roomID: '',
+					problemid: information.problemid
 				}
 				
 				if(information.id === 'candidate'){
