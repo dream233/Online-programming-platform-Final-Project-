@@ -76,12 +76,12 @@
 					</el-aside>
 					
 						<el-container>
-						<el-header>虚假的牛客网站，贼牛xxxxxx</el-header>
+						<el-header>在线编程面试平台</el-header>
 						
 						<!-- 代码框的位置 -->
 						<code-bar height='900px'></code-bar>
 						
-						<el-footer>联系方式：13535549796</el-footer>
+						<el-footer>gitee仓库：https://gitee.com/lllqaq/Online-programming-platform</el-footer>
 						
 						</el-container>
 

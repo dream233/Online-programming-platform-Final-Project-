@@ -18,9 +18,7 @@
 			  <el-menu-item index="3-2" @click="newProblem()">新建面试题</el-menu-item>
 		  </el-submenu>
 		  <el-menu-item index="4" @click="moveto('/loginSuccess/aboutus')">关于我们</el-menu-item>
-		 
-		  <el-menu-item index="5" @click="test()">个人信息</el-menu-item>
-		  <el-menu-item index="6" @click="moveto2('/')">退出</el-menu-item>
+		  <el-menu-item index="5" @click="moveto2('/')">退出</el-menu-item>
 		</el-menu>
 	</div>
 </template>
