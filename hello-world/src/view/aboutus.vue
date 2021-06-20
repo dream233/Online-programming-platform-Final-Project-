@@ -40,8 +40,8 @@
 		<el-collapse-item title="在线留言模块" name="5">
 			<div>模块功能介绍：候选人可以通过文字给面试官留言，面试官可以回复，留言内容长期保存，留言模块自动刷新</div>
 			<div>前端框架：莫文仪</div>
-			<div>前端实时文字聊天模块中页面内容渲染的实现：谭笑衡</div>
-			<div>前后端socketio传递消息：梁家榕</div>
+			<div>前端实时文字聊天模块中页面内容渲染的实现：谭笑衡，莫文仪</div>
+			<div>前后端socketio传递消息：梁家榕，莫文仪</div>
 			<div>后端房间号处理：蒋宇涛，袁志琛</div>
 			<div>后端聊天信息处理：梁家榕</div>
 		</el-collapse-item>
@@ -55,13 +55,19 @@
 		<el-collapse-item title="挑战2:在线留言模块改成实时文字聊天" name="7">
 			<div>模块功能介绍：候选人和面试官可实时文字聊天，其他获得链接的人都可参与文字聊天</div>
 			<div>前端框架：莫文仪</div>
-			<div>前端实时文字聊天模块中页面内容渲染的实现：谭笑衡</div>
-			<div>前后端socketio传递消息：梁家榕</div>
+			<div>前端实时文字聊天模块中页面内容渲染的实现：谭笑衡，莫文仪</div>
+			<div>前后端socketio传递消息：梁家榕，莫文仪</div>
 			<div>后端房间号处理：蒋宇涛，袁志琛</div>
 			<div>后端聊天信息处理：梁家榕</div>
 		</el-collapse-item>
 		
-		<el-collapse-item title="挑战5:在线编程模块支持协同编辑" name="8">
+		<el-collapse-item title="挑战4:在线编程模块支持运行 JS 代码" name="8">
+			<div>模块功能介绍：候选人和面试官可在线运行 JS 代码并查看输出</div>
+			<div>前端：袁志琛</div>
+			<div>后端：袁志琛</div>
+		</el-collapse-item>
+		
+		<el-collapse-item title="挑战5:在线编程模块支持协同编辑" name="9">
 			<div>模块功能介绍：候选人和面试官可实时协作编程</div>
 			<div>前端：梁家榕</div>
 			<div>后端：蒋宇涛，袁志琛，梁家榕</div>

@@ -1,12 +1,12 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, session
 from flask_cors import CORS
 from uuid import uuid1
+from flask_socketio import SocketIO, emit, join_room
+import execjs
 
 from database import *
 from interface import *
 from email_sender import *
-
-from flask_socketio import SocketIO, emit, join_room
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -14,9 +14,11 @@ app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, cors_allowed_origins='*')
 
 # enable CORS
+CORS(app, resources={r'/*': {'origins': '*'}})
 CORS(app, supports_credentials=True)
-reg_queue = {}
 
+# 注册完成待验证邮箱的队列
+reg_queue = {}
 def user_in_reg_queue(email)->bool:
     for it in reg_queue.values():
         if it.get('email',0) == email:
@@ -36,10 +38,9 @@ def register():
     email = uinfo['email']
     if (not have_user(email)) and (not user_in_reg_queue(email)):        # 判断用户名称是否已经存在
         uid = uuid1().hex
-        reg_queue[uid] = uinfo
-        url = "111.229.68.117:5000/regcheck/"+uid
-        resp['message'] = 'Y'
+        url = "http://111.229.68.117:5000/regcheck/"+uid
         if send_reg_email(url,email):      # 发送验证邮件
+            reg_queue[uid] = uinfo
             resp['message'] = 'Y'
         else:
             resp['message'] = 'N'
@@ -65,6 +66,7 @@ def reg_check(uuid:str):
 @app.route('/forgetpassword',methods=['POST','GET'])
 def forget_password():
     data = request.get_json()
+    print(data)
     email = data.get('email',False)
     resp = {'status': 'success'}
     if email:                               # 判断邮箱是否合法
@@ -92,12 +94,16 @@ def login():
     
     # 查询用户信息,并进行匹配
     user_info = get_user_info(uinfo['email'])
-    if uinfo['password'] == user_info.get('password','') and uinfo['usertype'] == user_info.get('type',''):
+    if not user_info:
+        resp['message'] = 'N'
+        resp['error'] = "用户不存在"
+    elif uinfo['password'] == user_info.get('password','') and uinfo['usertype'] == user_info.get('type',''):
         resp['message'] = 'Y'
         resp['username'] = user_info['username']        # 登陆成功返回用户名称
+        session['username'] = user_info['username']
     else:
         resp['message'] = 'N'
-        resp['error'] = "用户不存在或不匹配"
+        resp['error'] = "用户不匹配"
     
     return jsonify(resp)
 
@@ -214,14 +220,12 @@ def add_history():
     else:
         return jsonify({'status': 'error'})
 
-# 在线聊天系统
+### 在线聊天系统
 # 加入房间
 @socketio.on('joinRoom')
 def on_join(data):
     room = data['roomID']
     join_room(room)
-
-    print(data)
 
 # 发送信息
 @socketio.on('msg')
@@ -229,9 +233,24 @@ def on_msg(data):
     pkg = {'username':data['email'],'contents':data['msg'],'roomid':data['roomID']}
     add_comment(pkg)
     emit('broadcastMsg', data, broadcast=True)
-
-    print(data)
-
+    
+# 在线编译代码
+@app.route('/compilejs', methods=['GET','POST'])
+def compilejs():
+    response_object = {'status': 'success'}
+    post_data = request.get_json()
+    js = post_data.get('sendCode')
+    js = js.replace('\n', '').replace('\r', '').replace('\t','')
+    try:
+        ctx = execjs.compile(js)
+        response_object['answer'] = ctx.call("main")
+    except:
+        response_object['message'] = 'N'
+        return jsonify(response_object)
+    response_object['message'] = 'Y'
+    return jsonify(response_object)
+    
+    
 if __name__=='__main__':
     socketio.run(app, port=5000,debug=True, host='0.0.0.0')
     

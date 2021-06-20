@@ -1,10 +1,15 @@
 <template>
 	<div>
 		<codemirror v-model="code" :options="cmOption" />
+		<button @click="compilejs()">运行代码</button>
 		<!-- <button @click="getMessage()">get</button>
 		<button @click="postMessage()">post</button>
 		<el-input v-model="input" placeholder="请输入内容"></el-input> -->
 	</div>
+	<!-- 按钮 -->
+
+	
+
 	
 </template>
 
@@ -63,26 +68,11 @@
       return {
 		  
 		code: 
-`import someResource from 'codemirror/some-resource'
-export default {
-data () {
-  // 这是一个包含、代码提示、折叠、选中、sublime模式...的编辑器
-  // 按下Ctrl键可以体验代码提示
-  // 可以尝试sublime下的快捷键操作
-  return {
-	exampleCode: 'const a = 10',
-	cmOption: {
-	  tabSize: 4,
-	  styleActiveLine: true,
-	  lineNumbers: true,
-	  line: true,
-	  mode: 'text/javascript',
-	  lineWrapping: true,
-	  theme: 'default'
-	}
-  }
-},
-components: examples
+`function main(){
+  function a(x,y){
+    return x+y;
+  } 
+  return a(1,2);
 }
 `,
         cmOption: {
@@ -167,6 +157,24 @@ components: examples
 		    .catch((error) => {
 		      // eslint-disable-next-line
 		      console.error(error);
+			});
+		},
+		compilejs(){
+			const path = this.global.baseURL + ':5000/compilejs';
+			var i = JSON.parse(this.$route.query.information);
+			var room = i.roomID;
+			var information ={
+				sendCode:this.code,
+				sendRoom:room,
+				type:'post'
+			}
+			axios.post(path,information)
+			.then((res)=>{
+				alert('function return: ' + res.data.answer);
+			})
+			.catch((error) => {
+			  // eslint-disable-next-line
+			  console.error(error);
 			});
 		},
 		
