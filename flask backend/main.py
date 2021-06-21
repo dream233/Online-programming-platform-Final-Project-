@@ -3,7 +3,6 @@ from flask_cors import CORS
 from uuid import uuid1
 from flask_socketio import SocketIO, emit, join_room
 import execjs
-
 from database import *
 from interface import *
 from email_sender import *
@@ -17,7 +16,11 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 CORS(app, resources={r'/*': {'origins': '*'}})
 CORS(app, supports_credentials=True)
 
-# 注册完成待验证邮箱的队列
+##############################################################################
+# 登陆注册模块
+##############################################################################
+
+# 注册完成待验证的队列
 reg_queue = {}
 def user_in_reg_queue(email)->bool:
     for it in reg_queue.values():
@@ -107,10 +110,14 @@ def login():
     
     return jsonify(resp)
 
+##############################################################################
+# 面试题目管理
+##############################################################################
+
 # 获取题目信息
 @app.route('/problemCheck', methods=['GET','POST'])
 def problemCheck():
-    problem_req = get_req_of_problem()
+    problem_req = request.get_json()
     resp = {'status': 'success'}
     if not problem_req:             # 请求信息不全返回报错
         resp['error'] = "题目信息错误"
@@ -146,7 +153,7 @@ def list_problem():
 @app.route('/problemCreate', methods=['GET','POST'])
 def problem_create():
     resp = {'status': 'success'}
-    prob_info = get_problem_info()
+    prob_info = request.get_json()
     if create_problem(prob_info):
         resp['message'] = 'Y'
     else:
@@ -157,12 +164,16 @@ def problem_create():
 @app.route('/problemEdit', methods=['GET','POST'])
 def problem_edit():
     resp = {'status': 'success'}
-    prob_info = get_problem_info()
+    prob_info = request.get_json()
     if alter_problem(prob_info['ProblemID'],prob_info):
         resp['message'] = 'Y'
     else:
         resp['message'] = 'N'
     return jsonify(resp)
+
+##############################################################################
+# 面试代码处理
+##############################################################################
 
 # 发送接收面试代码
 code_list = {}
@@ -181,7 +192,11 @@ def post_code():
             return "sucess"
     return "error"
 
-# 创建房间，获取历史记录
+##############################################################################
+# 在线聊天系统
+##############################################################################
+
+# 创建房间
 @app.route('/createroom', methods=['GET','POST'])
 def createroom():
     resp = {'status': 'success'}
@@ -220,20 +235,18 @@ def add_history():
     else:
         return jsonify({'status': 'error'})
 
-### 在线聊天系统
-# 加入房间
+# 聊天室绑定socket
 @socketio.on('joinRoom')
 def on_join(data):
     room = data['roomID']
     join_room(room)
 
-# 发送信息
+# socket广播信息
 @socketio.on('msg')
 def on_msg(data):
     pkg = {'username':data['email'],'contents':data['msg'],'roomid':data['roomID']}
-    add_comment(pkg)
+    add_comment(pkg)                            # 将信息同时加入数据库
     emit('broadcastMsg', data, broadcast=True)
-    
 # 在线编译代码
 @app.route('/compilejs', methods=['GET','POST'])
 def compilejs():
@@ -249,8 +262,8 @@ def compilejs():
         return jsonify(response_object)
     response_object['message'] = 'Y'
     return jsonify(response_object)
-    
-    
+
+
 if __name__=='__main__':
     socketio.run(app, port=5000,debug=True, host='0.0.0.0')
     

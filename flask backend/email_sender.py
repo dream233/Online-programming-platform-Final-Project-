@@ -30,11 +30,19 @@ def send_email(subject,content,dest):
         return False
 
 def send_reg_email(content,dest):
+    """发送注册验证邮件
+    content:注册url
+    dest:目标邮箱
+    """
     content = "请点击下方链接完成验证：\n"+content
     subject = '在线编程面试平台注册验证邮件'
     return send_email(subject,content,dest)
     
 def send_forgetpwd_email(content,dest):
+    """发送密码
+    content:发送的密码
+    dest:目标邮箱
+    """
     content = "您的密码是：\n"+content
     subject= "在线编程面试平台忘记密码处理邮件"
     return send_email(subject,content,dest)

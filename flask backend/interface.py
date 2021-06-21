@@ -1,6 +1,9 @@
 from flask import request
 
 def get_login_info():
+    """获取登陆信息
+    return:登陆信息{email,password,usertype}
+    """
     data = request.get_json()
     res = {}
     try:
@@ -15,6 +18,9 @@ def get_login_info():
     return res
 
 def get_reg_info():
+    """获取注册信息
+    return:注册信息{email,username,password,usertype}
+    """
     data = request.get_json()
     res = {}
     try:
@@ -28,21 +34,11 @@ def get_reg_info():
     except:
         return None
     return res
-    
-def get_req_of_problem():
-    data = request.get_json()
-    res = {}
-    try:
-        res['id'] = data.get('id')
-    except:
-        return None
-    return res
-
-def get_problem_info():
-    data = request.get_json()
-    return data
 
 def get_code_info():
+    """获取代码信息
+    return:代码信息{type,sendRoom,sendCode}
+    """
     data = request.get_json()
     try:
         tp = data['type']
@@ -51,6 +47,9 @@ def get_code_info():
     return data
 
 def get_room_info():
+    """获取房间信息
+    return:房间信息{roomid}
+    """
     data = request.get_json()
     res = {}
     try:
@@ -60,6 +59,9 @@ def get_room_info():
     return res
 
 def get_chat_info():
+    """获取聊天信息
+    return:聊天信息{roomid，username,contents}
+    """
     data = request.get_json()
     res = {}
     try:
