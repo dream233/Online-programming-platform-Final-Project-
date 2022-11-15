@@ -41,7 +41,7 @@ def register():
     email = uinfo['email']
     if (not have_user(email)) and (not user_in_reg_queue(email)):        # 判断用户名称是否已经存在
         uid = uuid1().hex
-        url = "http://111.229.68.117:5000/regcheck/"+uid
+        url = "http://127.0.0.1:5000/regcheck/"+uid
         if send_reg_email(url,email):      # 发送验证邮件
             reg_queue[uid] = uinfo
             resp['message'] = 'Y'

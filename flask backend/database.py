@@ -1,7 +1,9 @@
-import pyodbc
+import pymongo
 
-db = pyodbc.connect("DRIVER={ODBC Driver 17 for SQL Server};SERVER=localhost,14333;DATABASE=online_programming_platform;UID=pyserver;PWD=1ybaHlY5xJ")
-cur = db.cursor()
+conn_str = "mongodb+srv://charles:charles123456@cluster0.8nx4ghy.mongodb.net/test"
+client = pymongo.MongoClient(conn_str, serverSelectionTimeoutMS=5000)
+db = client["cse503final"]
+users = db["users"]
 
 def create_user(userinfo:dict):
     """创建用户
@@ -9,10 +11,12 @@ def create_user(userinfo:dict):
     return:bool
     """
     try:
-        cur.execute("insert into users(username,email,password,usertype) values(?,?,?,?)",[userinfo['username'],userinfo['email'],userinfo['password'],userinfo['usertype']])
-        db.commit()
+        # cur.execute("insert into users(username,email,password,usertype) values(?,?,?,?)",[userinfo['username'],userinfo['email'],userinfo['password'],userinfo['usertype']])
+        # db.commit()
+        post  = {"username":userinfo['username'], "email":userinfo['email'], "password":userinfo['password'],"usertype":userinfo['usertype']}
+        users.insert_one(post)
     except:
-        cur.rollback()
+        # cur.rollback()
         return False
     return True
 
@@ -22,11 +26,13 @@ def have_user(email:str)->bool:
     return:bool
     """
     try:
-        cur.execute("select * from users where users.email=?",email)
-        if cur.fetchone():
+        # cur.execute("select * from users where users.email=?",email)
+        results = users.find({"email":email})
+        if results != "None":
             return True
     except:
-        cur.rollback()
+        # cur.rollback()
+        print("error")
     return False
 
 def get_user_info(email:str)->dict:
@@ -35,15 +41,21 @@ def get_user_info(email:str)->dict:
     return:用户信息{email,username,password,type}
     """
     try:
-        cur.execute("select * from users where users.email=?",email)
-        row = cur.fetchone()
-        if not row:
-            return None
+        # cur.execute("select * from users where users.email=?",email)
+        # row = cur.fetchone()
+        # if not row:
+        #     return None
         
-        info = {'email':row[0],'username':row[1],'password':row[2],'type':row[3]}
+        # info = {'email':row[0],'username':row[1],'password':row[2],'type':row[3]}
+        results = users.find({"email":email})
+        if results == "None":
+            return True
+
+        info = {'email':results[0],'username':results[1],'password':results[2],'type':results[3]}
         return info
     except:
-        cur.rollback()
+        # cur.rollback()
+        print("error")
     return None
 
 def create_problem(problem:dict):
