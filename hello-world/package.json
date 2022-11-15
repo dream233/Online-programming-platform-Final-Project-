@@ -8,6 +8,7 @@
     "server": "node server/app.js"
   },
   "dependencies": {
+    "webpack":"^5.55.1",
     "axios": "^0.21.1",
     "codemirror": "^5.61.1",
     "core-js": "^3.6.5",
@@ -25,8 +26,8 @@
     "vue-socket.io": "^3.0.10"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
+    "@vue/cli-plugin-babel": "^5.0.8",
+    "@vue/cli-service": "^5.0.8",
     "less": "^3.0.4",
     "less-loader": "^5.0.0",
     "vue-template-compiler": "^2.6.11"
