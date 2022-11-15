@@ -1,1 +1,0 @@
-npm install && npm install vue-router --save && npm i element-ui -S && npm install axios --save && npm install --save codemirror && npm install --save dedent && npm install quill --save && npm install vue-quill-editor --save && npm install quill-image-resize-module -S &&
