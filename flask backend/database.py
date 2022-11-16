@@ -4,6 +4,9 @@ conn_str = "mongodb+srv://charles:charles123456@cluster0.8nx4ghy.mongodb.net/tes
 client = pymongo.MongoClient(conn_str, serverSelectionTimeoutMS=5000)
 db = client["cse503final"]
 users = db["users"]
+problems = db["problems"]
+comments = db["comments"]
+chatrooms = db["chatrooms"]
 
 def create_user(userinfo:dict):
     """创建用户
@@ -17,9 +20,11 @@ def create_user(userinfo:dict):
         users.insert_one(post)
     except:
         # cur.rollback()
+        print("error in create_user")
         return False
     return True
 
+# 已修复11/16 
 def have_user(email:str)->bool:
     """查询是否存在此用户
     email:邮箱地址
@@ -27,12 +32,12 @@ def have_user(email:str)->bool:
     """
     try:
         # cur.execute("select * from users where users.email=?",email)
-        results = users.find({"email":email})
-        if results != "None":
+        results = users.find_one({"email":email})
+        if results != None:
             return True
     except:
         # cur.rollback()
-        print("error")
+        print("error in have_user")
     return False
 
 def get_user_info(email:str)->dict:
@@ -47,15 +52,17 @@ def get_user_info(email:str)->dict:
         #     return None
         
         # info = {'email':row[0],'username':row[1],'password':row[2],'type':row[3]}
-        results = users.find({"email":email})
-        if results == "None":
-            return True
+        results = users.find_one({"email":email})
+        if results == None:
+            return None
+    
+        info = {'username':results['username'],'email':results['email'], 'password':results['password'],'type':results['usertype']}
 
-        info = {'email':results[0],'username':results[1],'password':results[2],'type':results[3]}
         return info
+        
     except:
         # cur.rollback()
-        print("error")
+        print("error in get_user_info")
     return None
 
 def create_problem(problem:dict):
@@ -64,10 +71,14 @@ def create_problem(problem:dict):
     return:bool
     """
     try:
-        cur.execute("insert into problems(problem_id,owner_id,password,contents) values(?,?,?,?)",[problem['id'],problem['owner'],problem['password'],problem['contents']])
-        db.commit()
+        # cur.execute("insert into problems(problem_id,owner_id,password,contents) values(?,?,?,?)",[problem['id'],problem['owner'],problem['password'],problem['contents']])
+        # db.commit()
+        post  = {"problem_id":problem['id'], "owner_id":problem['owner'], "password":problem['password'],"contents":problem['contents']}
+        users.insert_one(post)
+
     except:
-        cur.rollback()
+        # cur.rollback()
+        print("error in create_problem")
         return False
     return True
 
@@ -77,11 +88,14 @@ def get_problem(problem_id:str)->dict:
     return:题目信息{id,password,owner,contents}
     """
     try:
-        cur.execute("select * from problems where problem_id=?",problem_id)
-        row = cur.fetchone()
-        return dict(zip(['id','owner','password','contents'],row))
+        # cur.execute("select * from problems where problem_id=?",problem_id)
+        # row = cur.fetchone()
+        # return dict(zip(['id','owner','password','contents'],row))
+        results = problems.find_one({"problem_id":problem_id})
+        return dict(zip(['id','owner','password','contents'],results))
     except:
-        cur.rollback()
+        # cur.rollback()
+        print("error in get_problem")
         return None
 
 def list_problemid()->list:
@@ -89,13 +103,20 @@ def list_problemid()->list:
     return:题目ID列表[{id}]
     """
     try:
+        # res = []
+        # cur.execute("select problem_id from problems")
+        # for row in cur.fetchall():
+        #     res.append({'id':row[0]})
+        # return res
+
         res = []
-        cur.execute("select problem_id from problems")
-        for row in cur.fetchall():
-            res.append({'id':row[0]})
+        results = problems.find({})
+        for result in results:
+            res.append({'id':result[0]})
         return res
     except:
-        cur.rollback()
+        print("error in list_problemid")
+        # cur.rollback()
     return None
 
 def alter_problem(problem_id:str,new_problem:dict)->bool:
@@ -106,10 +127,12 @@ def alter_problem(problem_id:str,new_problem:dict)->bool:
     """
     try:
         info = [new_problem['contents'],problem_id]
-        cur.execute("update problems set contents=? where problem_id=?",info)
-        db.commit()
+        # cur.execute("update problems set contents=? where problem_id=?",info)
+        # db.commit()
+        results = problems.update_one({"problem_id":problem_id}, {"$set":{"contents":info}}) 
     except:
-        cur.rollback()
+        # cur.rollback()
+        print("error in alter_problem")
         return False
     return True
 
@@ -119,10 +142,13 @@ def delete_problem(problem_id:str)->bool:
     return:bool
     """
     try:
-        cur.execute("delete from problems where problem_id=?",problem_id)
-        db.commit()
+        # cur.execute("delete from problems where problem_id=?",problem_id)
+        # db.commit()
+        results = problems.delete({"problem_id":problem_id})
+
     except:
-        cur.rollback()
+        # cur.rollback()
+        print("error in delete_problem")
         return False
     return True
 
@@ -133,10 +159,13 @@ def add_comment(comment:dict)->bool:
     """
     try:
         cmt = [comment['roomid'],comment['username'],comment['contents']]
-        cur.execute("insert into comments(room_id,username,comment_time,contents) values (?,?,getdate(),?)",cmt)
-        db.commit()
+        # cur.execute("insert into comments(room_id,username,comment_time,contents) values (?,?,getdate(),?)",cmt)
+        # db.commit()
+        post  = {"room_id":comment['roomid'], "username":comment['username'], "contents":comment['contents']}
+        comments.insert_one(post)
     except:
-        cur.rollback()
+        # cur.rollback()
+        print("error in add_comment")
         return False
     return True
 
@@ -146,10 +175,13 @@ def create_chatroom(roomid:str)->bool:
     return:bool
     """
     try:
-        cur.execute("insert into chatrooms(room_id) values(?)",roomid)
-        db.commit()
+        # cur.execute("insert into chatrooms(room_id) values(?)",roomid)
+        # db.commit()
+        post  = {"room_id":roomid}
+        chatrooms.insert_one(post)
     except:
-        cur.rollback()
+        # cur.rollback()
+        print("error in create_chatroom")
         return False
     return True
 
@@ -159,13 +191,18 @@ def have_chatroom(roomid:str)->bool:
     return:bool
     """
     try:
-        cur.execute("select * from chatrooms where room_id=?",roomid)
-        if cur.fetchone():
+        # cur.execute("select * from chatrooms where room_id=?",roomid)
+        # if cur.fetchone():
+        #     return True
+        results = chatrooms.find({"roomid":roomid})
+        if results != "None":
             return True
     except:
-        cur.rollback()
+        print("error in have_chatroom")
+        # cur.rollback()
     return False
 
+# pymongo 多表联查还没搞明白
 def get_comment(roomid:str)->list:
     """获取留言
     roomid:房间号
@@ -173,7 +210,9 @@ def get_comment(roomid:str)->list:
     """
     try:
         res = []
-        cur.execute("select room_id,users.username,email,comment_time,contents,usertype from comments,users where comments.room_id=? and comments.username=users.email order by comment_time asc",roomid)
+        # cur.execute("select room_id,users.username,email,comment_time,contents,usertype from comments,users where comments.room_id=? and comments.username=users.email order by comment_time asc",roomid)
+        results = collection.find({"name":"charles","password":"123456"})
+        
         for row in cur.fetchall():
             usertype = row[5]
             if usertype == '2':

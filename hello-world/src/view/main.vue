@@ -146,7 +146,7 @@
 					roomID:information.roomID,
 				}
 				
-				const path = 'http://111.229.68.117:5000/joinroom';
+				const path = this.global.baseURL + ':5000/joinroom';
 				axios.post(path,x)
 								.then((res)=>{
 									//房间号已存在

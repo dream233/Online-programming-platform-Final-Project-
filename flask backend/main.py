@@ -39,6 +39,8 @@ def register():
         return jsonify(resp)
     
     email = uinfo['email']
+    # print(not have_user(email))
+    # print(not user_in_reg_queue(email))
     if (not have_user(email)) and (not user_in_reg_queue(email)):        # 判断用户名称是否已经存在
         uid = uuid1().hex
         url = "http://127.0.0.1:5000/regcheck/"+uid
@@ -89,6 +91,7 @@ def forget_password():
 @app.route('/login',methods=['POST','GET'])
 def login():
     uinfo = get_login_info()
+    # print(uinfo)
     resp = {'status': 'success'}
     if not uinfo:                   # 如果用户信息不全面则返回错误
         resp['error'] = '用户信息错误'
