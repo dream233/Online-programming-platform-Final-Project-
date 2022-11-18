@@ -145,27 +145,6 @@
 				x = {
 					roomID:information.roomID,
 				}
-				
-				const path = this.global.baseURL + ':5000/joinroom';
-				axios.post(path,x)
-								.then((res)=>{
-									//房间号已存在
-									if(res.data.message=='Y'){
-										//加入成功
-										this.$message.success('成功进入房间')
-										/*
-											发送roomID给后端，获取聊天记录
-										*/
-										this.history=res.data.chathistory
-									}
-									else{
-										this.$message.error('roomID不存在');
-									}
-								})
-								.catch((error)=>{
-									console.log(error);
-							})
-
 			}
 			else {//之前没输入过房间号
 				this.show_candidate= information.id==='candidate'?1:0;

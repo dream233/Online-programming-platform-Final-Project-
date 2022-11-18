@@ -74,7 +74,7 @@ def create_problem(problem:dict):
         # cur.execute("insert into problems(problem_id,owner_id,password,contents) values(?,?,?,?)",[problem['id'],problem['owner'],problem['password'],problem['contents']])
         # db.commit()
         post  = {"problem_id":problem['id'], "owner_id":problem['owner'], "password":problem['password'],"contents":problem['contents']}
-        users.insert_one(post)
+        problems.insert_one(post)
 
     except:
         # cur.rollback()
@@ -92,7 +92,7 @@ def get_problem(problem_id:str)->dict:
         # row = cur.fetchone()
         # return dict(zip(['id','owner','password','contents'],row))
         results = problems.find_one({"problem_id":problem_id})
-        return dict(zip(['id','owner','password','contents'],results))
+        return dict(zip(['_id','problem_id','owner','password','contents'],results.values()))
     except:
         # cur.rollback()
         print("error in get_problem")
@@ -111,8 +111,9 @@ def list_problemid()->list:
 
         res = []
         results = problems.find({})
+        print(results)
         for result in results:
-            res.append({'id':result[0]})
+            res.append({'id':result['problem_id']})
         return res
     except:
         print("error in list_problemid")
@@ -126,7 +127,8 @@ def alter_problem(problem_id:str,new_problem:dict)->bool:
     return:bool
     """
     try:
-        info = [new_problem['contents'],problem_id]
+        info = new_problem['contents']
+        print('info', info)
         # cur.execute("update problems set contents=? where problem_id=?",info)
         # db.commit()
         results = problems.update_one({"problem_id":problem_id}, {"$set":{"contents":info}}) 
@@ -194,8 +196,8 @@ def have_chatroom(roomid:str)->bool:
         # cur.execute("select * from chatrooms where room_id=?",roomid)
         # if cur.fetchone():
         #     return True
-        results = chatrooms.find({"roomid":roomid})
-        if results != "None":
+        results = chatrooms.find_one({"room_id":roomid})
+        if results != None:
             return True
     except:
         print("error in have_chatroom")
@@ -211,7 +213,7 @@ def get_comment(roomid:str)->list:
     try:
         res = []
         # cur.execute("select room_id,users.username,email,comment_time,contents,usertype from comments,users where comments.room_id=? and comments.username=users.email order by comment_time asc",roomid)
-        results = collection.find({"name":"charles","password":"123456"})
+        results = comments.find({"name":"charles","password":"123456"})
         
         for row in cur.fetchall():
             usertype = row[5]

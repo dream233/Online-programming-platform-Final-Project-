@@ -17,10 +17,10 @@ CORS(app, resources={r'/*': {'origins': '*'}})
 CORS(app, supports_credentials=True)
 
 ##############################################################################
-# 登陆注册模块
+# Login/Sign Module
 ##############################################################################
 
-# 注册完成待验证的队列
+# register queue
 reg_queue = {}
 def user_in_reg_queue(email)->bool:
     for it in reg_queue.values():
@@ -28,7 +28,7 @@ def user_in_reg_queue(email)->bool:
             return True
     return False
 
-# 注册
+# register
 @app.route('/register',methods=['POST','GET'])
 def register():
     uinfo = get_reg_info()        # 获取登陆信息
@@ -55,7 +55,7 @@ def register():
         resp['error'] = '用户已经存在'
     return jsonify(resp)
 
-# 邮箱验证
+# email verification
 @app.route('/regcheck/<uuid>')
 def reg_check(uuid:str):
     if uuid not in reg_queue:       # 不存在此链接，验证失败
@@ -67,7 +67,7 @@ def reg_check(uuid:str):
     else:
         return "服务器错误！"
 
-# 忘记密码
+# forget psd
 @app.route('/forgetpassword',methods=['POST','GET'])
 def forget_password():
     data = request.get_json()
@@ -87,7 +87,7 @@ def forget_password():
     
     return jsonify(resp)
 
-# 登陆    
+# login
 @app.route('/login',methods=['POST','GET'])
 def login():
     uinfo = get_login_info()
@@ -114,10 +114,10 @@ def login():
     return jsonify(resp)
 
 ##############################################################################
-# 面试题目管理
+# Question Management
 ##############################################################################
 
-# 获取题目信息
+# display problem content
 @app.route('/problemCheck', methods=['GET','POST'])
 def problemCheck():
     problem_req = request.get_json()
@@ -128,6 +128,7 @@ def problemCheck():
         return jsonify(resp)
 
     prob_info = get_problem(problem_req['id'])  # 按ID获取题目信息
+    
     if not prob_info:
         resp['message'] = 'N'
     else:
@@ -138,7 +139,7 @@ def problemCheck():
     
     return jsonify(resp)
 
-# 显示题目列表
+# display problem list
 @app.route('/pblist', methods=['POST','GET'])
 def list_problem():
     resp = {'status': 'success'}
@@ -152,7 +153,7 @@ def list_problem():
     
     return jsonify(resp)
 
-# 创建题目
+# create problem
 @app.route('/problemCreate', methods=['GET','POST'])
 def problem_create():
     resp = {'status': 'success'}
@@ -163,7 +164,7 @@ def problem_create():
         resp['message'] = 'N'
     return jsonify(resp)
 
-# 修改题目
+# edit problem
 @app.route('/problemEdit', methods=['GET','POST'])
 def problem_edit():
     resp = {'status': 'success'}
@@ -175,7 +176,7 @@ def problem_edit():
     return jsonify(resp)
 
 ##############################################################################
-# 面试代码处理
+# Interview Code Processing
 ##############################################################################
 
 # 发送接收面试代码
@@ -196,10 +197,10 @@ def post_code():
     return "error"
 
 ##############################################################################
-# 在线聊天系统
+# Online Chatting System
 ##############################################################################
 
-# 创建房间
+# create room
 @app.route('/createroom', methods=['GET','POST'])
 def createroom():
     resp = {'status': 'success'}
@@ -209,26 +210,27 @@ def createroom():
         create_chatroom(roomid)
         resp['message'] = 'N'
     else:
-        history = get_comment(roomid)
+        # history = get_comment(roomid)
         resp['message'] = 'Y'
-        resp['chathistory'] = history
+        # resp['chathistory'] = history
     return jsonify(resp)
 
-# 加入房间，获取历史记录
+# join room
 @app.route('/joinroom',methods=['GET','POST'])
 def joinroom():
     resp = {'status': 'success'}
     data = get_room_info()
     roomid = data['roomid']
+    print(have_chatroom(roomid))
     if not have_chatroom(roomid):
         resp['message'] = 'N'
     else:
-        history = get_comment(roomid)
+        # history = get_comment(roomid)
         resp['message'] = 'Y'
-        resp['chathistory'] = history
+        # resp['chathistory'] = history
     return jsonify(resp)
 
-# 添加聊天记录
+# load chat history
 @app.route('/chat', methods=['GET','POST'])
 def add_history():
     resp = {'status': 'success'}
@@ -238,18 +240,19 @@ def add_history():
     else:
         return jsonify({'status': 'error'})
 
-# 聊天室绑定socket
+# socket
 @socketio.on('joinRoom')
 def on_join(data):
     room = data['roomID']
     join_room(room)
 
-# socket广播信息
+# socket broadcast
 @socketio.on('msg')
 def on_msg(data):
     pkg = {'username':data['email'],'contents':data['msg'],'roomid':data['roomID']}
     add_comment(pkg)                            # 将信息同时加入数据库
     emit('broadcastMsg', data, broadcast=True)
+
 # 在线编译代码
 @app.route('/compilejs', methods=['GET','POST'])
 def compilejs():
