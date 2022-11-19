@@ -221,13 +221,14 @@ def joinroom():
     resp = {'status': 'success'}
     data = get_room_info()
     roomid = data['roomid']
-    print(have_chatroom(roomid))
+    # print(have_chatroom(roomid))
     if not have_chatroom(roomid):
         resp['message'] = 'N'
     else:
-        # history = get_comment(roomid)
+        history = get_comment(roomid)
+        # print(history)
         resp['message'] = 'Y'
-        # resp['chathistory'] = history
+        resp['chathistory'] = history
     return jsonify(resp)
 
 # load chat history

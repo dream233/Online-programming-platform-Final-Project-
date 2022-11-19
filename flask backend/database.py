@@ -212,18 +212,54 @@ def get_comment(roomid:str)->list:
     """
     try:
         res = []
+        # print(roomid)
         # cur.execute("select room_id,users.username,email,comment_time,contents,usertype from comments,users where comments.room_id=? and comments.username=users.email order by comment_time asc",roomid)
-        results = comments.find({"name":"charles","password":"123456"})
+        pipeline = [
+            {
+                "$lookup":{
+                    "from": "users",       # other table name
+                    "localField": "username",   # name of users table field
+                    "foreignField": "email", # name of userinfo table field
+                    "as": "user_info"         # alias for userinfo table
+                }
+            },
+            {   "$unwind":"$user_info" },     # $unwind used for getting data in object or for one record only
+
+            # // define some conditions here 
+            {
+                "$match":{
+                    "$and":[{"room_id" : roomid}]
+                }
+            }
+
+            # # // define which fields are you want to fetch
+            # {   
+            #     "$project":{
+            #         "room_id" : 1,
+            #         "email" : "$users.email",
+            #         # "comment_time" : 1,
+            #         "username" : "$users.username",
+            #         "contents" : 1,
+            #         # "usertype" : 1
+            #     } 
+            # }
+        ]
+        # print("11111111111111111111111111111111111111111111")
+        results = db.comments.aggregate(pipeline)
+        # print("2222222222222222222222222222222222222222222")
         
-        for row in cur.fetchall():
-            usertype = row[5]
+        for result in results:
+            usertype = result["user_info"]["usertype"]
             if usertype == '2':
                 usertype = 'interviewer'
             else:
                 usertype = 'candidate'
-            tmp = {'roomID':row[0],'username':row[1],'email':row[2],'time':row[3].strftime('%Y-%m-%d %H:%M:%S'),'msg':row[4],'type':usertype}
+            # tmp = {'roomID':result["room_id"],'username':result["username"],'email':result["email"],'time':result[3].strftime('%Y-%m-%d %H:%M:%S'),'msg':result[4],'type':usertype}
+            
+            tmp = {'roomID':result["room_id"],'username':result["username"],'email':result["user_info"]["email"],'msg':result["contents"], 'type':usertype}
+            
             res.append(tmp)
         return res
     except:
-        cur.rollback()
+        print("error in get_comment")
     return None
