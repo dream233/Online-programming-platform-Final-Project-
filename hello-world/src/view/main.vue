@@ -243,13 +243,15 @@
 										
 										//发送roomID给后端，获取聊天记录
 										this.history=res.data.chathistory
+										console.log(res.data.chathistory)
 										this.show_interviewer=false
 										this.show_candidate=false
 										this.show_home=true
 										this.moveto('/loginSuccess/main');
-										console.log(this.history)
 										
-										location.reload();
+										
+										// location.reload();
+										console.log("history is "+this.history)
 									}
 									else{
 										this.$message.error('roomID不存在');
