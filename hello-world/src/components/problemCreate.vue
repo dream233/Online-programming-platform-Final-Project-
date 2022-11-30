@@ -8,21 +8,21 @@
 			            @blur="onEditorBlur($event)" @focus="onEditorFocus($event)"
 			            @change="onEditorChange($event)">
 			        </quill-editor>
-					<el-button type="primary" @click="dialogFormVisible = true">创建<i class="el-icon-upload el-icon--right"></i></el-button>
+					<el-button type="primary" @click="dialogFormVisible = true">create<i class="el-icon-upload el-icon--right"></i></el-button>
 					
-					<el-dialog title="题目信息(用于创建题目权限)" :visible.sync="dialogFormVisible">
+					<el-dialog title="Topic information (for creating topic permissions)" :visible.sync="dialogFormVisible">
 					  <el-form >
-					    <el-form-item label="题目id" :label-width="formLabelWidth">
-					      <el-input type="text" placeholder="请输入8位数字id" 
+					    <el-form-item label="topic id" :label-width="formLabelWidth">
+					      <el-input type="text" placeholder="Please enter 8 digits id" 
 						  v-model="pinformation.id" show-word-limit autocomplete="off" maxlength="8"></el-input>
 					    </el-form-item>
-					    <el-form-item label="题目密码" :label-width="formLabelWidth">
+					    <el-form-item label="topic password" :label-width="formLabelWidth">
 					      <el-input v-model="pinformation.password" autocomplete="off"></el-input>
 					    </el-form-item>
 					  </el-form>
 					  <div slot="footer" class="dialog-footer">
-					    <el-button @click="dialogFormVisible = false">取 消</el-button>
-					    <el-button type="primary" @click="dialogFormVisible = false;saveHtml()">确 定</el-button>
+					    <el-button @click="dialogFormVisible = false">Cancel</el-button>
+					    <el-button type="primary" @click="dialogFormVisible = false;saveHtml()">confirm</el-button>
 					  </div>
 					</el-dialog>
 			    </div>  
@@ -125,7 +125,7 @@
 						if(res.data.message=='Y'){
 							this.$message({
 							          showClose: true,
-							          message: '题目创建成功',
+							          message: 'problem created successfully',
 							          type: 'success'
 							        });
 							this.moveto("/loginSuccess/pblist");
@@ -133,37 +133,12 @@
 						else{
 							this.$message({
 							          showClose: true,
-							          message: '题目id已存在',
+							          message: 'problem id exist',
 							          type: 'warning'
 							        });
 						}
 					})
-			  //这里判断题目是否已存在
-			  //this.pinformation.id表示题目id
-			  //this.pinformation.password表示题目密码
-			  //如果不是已存在，那么返回true，替换下面的判断条件
-			  /*const path = 'http://111.229.68.117:5000/problemCreate';
-			  axios.post(path,this.pinformation.id)
-					.then((res)=>{
-						
-					})*/
-			  /* if(!(this.pinformation.id=='1')){
-				  this.$message({
-				            showClose: true,
-				            message: '题目创建成功',
-				            type: 'success'
-				          });
-				  //这里把this.content存入对应的题目id里，this.content为内容
-				  //
-				  
-			  }
-			  else {
-				  this.$message({
-				            showClose: true,
-				            message: '题目id已存在',
-				            type: 'warning'
-				          });
-			  } */
+			  
 			}
 	    },
 		created(){

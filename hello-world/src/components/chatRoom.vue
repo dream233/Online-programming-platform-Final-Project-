@@ -37,7 +37,7 @@
         autofocus
         class="input"
         type="text"
-        placeholder="请输入会话内容"
+        placeholder="Please enter the content of the conversation"
         @keydown.enter="send(msg)"
         maxlength="20"
       />
@@ -82,7 +82,7 @@ export default {
     axios
       .post(path, x)
       .then((res) => {
-        // 发送roomID给后端，获取聊天记录
+        // Send roomID to the backend to get chat records
         this.history = res.data.chathistory;
         that.history = res.data.chathistory;
       })
@@ -91,14 +91,14 @@ export default {
       });
 
     console.log(this);
-    // 成功进入房间，调用joinRoom
+    // Successfully entered the room, call joinRoom
     if (this.roomID && information.id) {
       this.socket.emit("joinRoom", IDdata);
     } else {
       this.$router.push("/");
     }
 
-    // 监听服务器回传的信息
+    // Listen to the information returned by the server
     this.socket.on("broadcastMsg", (data) => {
       this.history.push({
         msgType: "clientMsg",
@@ -111,7 +111,7 @@ export default {
     });
   },
 
-  // 重新调用DOM时，回到聊天室最上方
+  // Return to the top of the chat room when the DOM is recalled
   updated() {
     this.$nextTick(() => {
       const oBody = document.querySelector(".body");

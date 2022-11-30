@@ -7,27 +7,27 @@
 				<el-row type="flex" justify="center" align="middle">
 					<!-- justify 对齐方式 -->
 					<el-card>
-						<h3 style="text-align: center;">请创建或加入面试房间</h3>
+						<h3 style="text-align: center;">Please create or join an interview room</h3>
 						<el-divider></el-divider>
 						<!-- form表单 -->
 						<el-form :model="roomForm_I" ref="roomForm_I" label-width="100px">
 						<!-- 房间号 -->
 						<el-form-item
-							label="房间号"
+							label="roomID"
 							prop="roomID"
 							:rules="[
-							{ required: true, message: '请输入8位房间号', trigger: 'blur'},
-							{ min: 8, max: 8, message: '长度 8 个字符', trigger: 'blur' }
+							{ required: true, message: 'Please enter an 8-digit room number', trigger: 'blur'},
+							{ min: 8, max: 8, message: 'length is 8-digit', trigger: 'blur' }
 							]"
 						>
-							<el-input placeholder="请输入8位房间号" type="text" v-model="roomForm_I.roomID" autocomplete="off"></el-input>
+							<el-input placeholder="Please enter an 8-digit room number" type="text" v-model="roomForm_I.roomID" autocomplete="off"></el-input>
 						</el-form-item>
 
 						
 						<!-- 按钮 -->
 						<el-form-item class="btns">
-							<el-button type="primary" @click="createRoom('roomForm_I')">创建</el-button>
-							<el-button @click="joinRoom('roomForm_I')">加入</el-button>
+							<el-button type="primary" @click="createRoom('roomForm_I')">create</el-button>
+							<el-button @click="joinRoom('roomForm_I')">join</el-button>
 						</el-form-item>
 						</el-form>
 
@@ -40,20 +40,20 @@
 			<el-row type="flex" justify="center" align="middle">
 					<!-- justify 对齐方式 -->
 					<el-card>
-						<h3 style="text-align: center;">请加入面试房间</h3>
+						<h3 style="text-align: center;">please join room</h3>
 						<el-divider></el-divider>
 						<!-- form表单 -->
 						<el-form :model="roomForm_C" ref="roomForm_C" label-width="100px">
 						<!-- 房间号 -->
 						<el-form-item
-							label="房间号"
+							label="roomID"
 							prop="roomID"
 							:rules="[
-							{ required: true, message: '请输入8位房间号', trigger: 'blur'},
-							{ min: 8, max: 8, message: '长度 8 个字符', trigger: 'blur' }
+							{ required: true, message: 'Please enter an 8-digit room number', trigger: 'blur'},
+							{ min: 8, max: 8, message: 'length is 8-digit', trigger: 'blur' }
 							]"
 						>
-							<el-input placeholder="请输入8位房间号" type="text" v-model="roomForm_C.roomID" autocomplete="off"></el-input>
+							<el-input placeholder="Please enter an 8-digit room number" type="text" v-model="roomForm_C.roomID" autocomplete="off"></el-input>
 						</el-form-item>
 
 						
@@ -76,12 +76,12 @@
 					</el-aside>
 					
 						<el-container>
-						<el-header>在线编程面试平台</el-header>
+						<el-header>Online coding interview platform</el-header>
 						
 						<!-- 代码框的位置 -->
 						<code-bar height='900px'></code-bar>
 						
-						<el-footer>gitee仓库：https://gitee.com/lllqaq/Online-programming-platform</el-footer>
+						<el-footer>github:</el-footer>
 						
 						</el-container>
 
@@ -193,7 +193,7 @@
 									if(res.data.message=='N'){
 										
 										//创建成功
-										this.$message.success('创建房间成功')
+										this.$message.success('Create room successfully')
 										
 										//发送roomID给后端，获取聊天记录
 										this.show_interviewer=false
@@ -204,7 +204,7 @@
 									}
 									//若已存在，弹框提醒面试官房间已存在
 									else{
-										this.$message.error('roomID已存在');
+										this.$message.error('roomID exist');
 									}
 								})
 								.catch((error)=>{
@@ -212,7 +212,7 @@
 							})
                         } 
 						else{
-                            this.$message.error('请输入8位房间号')
+                            this.$message.error('Please enter an 8-digit room number')
                             return false;
                         }
                     }
@@ -239,7 +239,7 @@
 									//房间号已存在
 									if(res.data.message=='Y'){
 										//加入成功
-										this.$message.success('成功进入房间')
+										this.$message.success('Create room successfully')
 										
 										//发送roomID给后端，获取聊天记录
 										this.history=res.data.chathistory
@@ -254,7 +254,7 @@
 										console.log("history is "+this.history)
 									}
 									else{
-										this.$message.error('roomID不存在');
+										this.$message.error('roomID not exist');
 									}
 								})
 								.catch((error)=>{

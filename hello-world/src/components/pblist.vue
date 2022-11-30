@@ -6,18 +6,18 @@
 		    style="width: 100%">
 		    <el-table-column
 		      prop="id"
-		      label="题目id"
+		      label="problem id"
 		      width="1000">
 		    </el-table-column>
 			<el-table-column
-			  label="查看"
+			  label="view problem"
 			  width="120">
 			  <template slot-scope="scope" >
 				  <el-button type="primary" icon="el-icon-search"  @click="open1(scope.row.id)"></el-button>
 			  </template>
 			</el-table-column>
 			<el-table-column
-			  label="编辑"
+			  label="edit problem"
 			  width="120">
 			  <template slot-scope="scope" >
 				  <el-button type="primary" icon="el-icon-edit" @click="open2(scope.row.id)"></el-button>
@@ -62,25 +62,25 @@
 						pp=res.data.password;
 					});
 					
-				 this.$prompt('请输入密码', '提示', {
-				           confirmButtonText: '确定',
-				           cancelButtonText: '取消',
+				 this.$prompt('please input password', 'prompt', {
+				           confirmButtonText: 'confirm',
+				           cancelButtonText: 'cancel',
 				           // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
 						   inputValidator(value){
 									if(value==pp) return true;
 									else return false;
 						   },
-				           inputErrorMessage: '密码错误'
+				           inputErrorMessage: 'password error'
 				         }).then(({ value }) => {
 				           this.$message({
 				             type: 'success',
-				             message: '题目id为' + id
+				             message: 'problem id is' + id
 				           });
 						   this.moveto('/loginSuccess/seeProblem/'+id+'/'+value);
 				         }).catch(() => {
 				           this.$message({
 				             type: 'info',
-				             message: '取消输入'
+				             message: 'cancel input'
 				           });       
 				         });
 			},
@@ -92,7 +92,7 @@
 				 if(information.id=='candidate'){
 				 				   this.$message({
 				 				            showClose: true,
-				 				            message: '只有面试官有权限',
+				 				            message: 'Only the interviewer has permission',
 				 				            type: 'warning',
 				 							// center: true
 				 				          });
@@ -107,41 +107,41 @@
 							if(pg!=information.name){
 								 this.$message({
 										  showClose: true,
-										  message: '您没有编辑该题的权限',
+										  message: 'You do not have permission to edit this question',
 										  type: 'warning',
 										});
 							}
 							else{
-								 this.$prompt('请输入密码', '提示', {
+								 this.$prompt('please enter password', 'prompt', {
 									 
-										   confirmButtonText: '确定',
-										   cancelButtonText: '取消',
+										   confirmButtonText: 'confirm',
+										   cancelButtonText: 'cancel',
 										   // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
 														   inputValidator(value){
 															//这里跟上面判断题目id和密码一样
 															   if(value==pp) return true;
 															   else return false;
 														   },
-										   inputErrorMessage: '密码错误'
+										   inputErrorMessage: 'password error'
 										 }).then(({ value }) => {
 										   this.$message({
 											 type: 'success',
-											 message: '题目id为' + id
+											 message: 'problem id is' + id
 										   });
 										   console.log(information)
 											this.moveto('/loginSuccess/problemEditor/'+id+'/'+value);
 										 }).catch(() => {
 										   this.$message({
 											 type: 'info',
-											 message: '取消输入'
+											 message: 'cancel input'
 										   });       
 										 });
 							}
 					 	});
-					 //这里判断该题目是不是这个面试官创建的
-					 //用information.name表示用户邮箱
-					 //id表示题目id，判断是否符合
-					 //如果不符合，返回true
+					 //Here to judge whether the topic was created by the interviewer
+					 //Use information.name to represent the user mailbox
+					 //id indicates the topic id, and judges whether it meets
+					 //If not, return true
 					
 				 }
 			}

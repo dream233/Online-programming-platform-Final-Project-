@@ -71,7 +71,7 @@ def reg_check(uuid:str):
 @app.route('/forgetpassword',methods=['POST','GET'])
 def forget_password():
     data = request.get_json()
-    print(data)
+    # print(data)
     email = data.get('email',False)
     resp = {'status': 'success'}
     if email:                               # 判断邮箱是否合法

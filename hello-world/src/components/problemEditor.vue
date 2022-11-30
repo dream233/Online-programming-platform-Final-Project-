@@ -8,7 +8,7 @@
 			            @blur="onEditorBlur($event)" @focus="onEditorFocus($event)"
 			            @change="onEditorChange($event)">
 			        </quill-editor>
-					<el-button type="primary" @click="saveHtml">保存<i class="el-icon-upload el-icon--right"></i></el-button>
+					<el-button type="primary" @click="saveHtml">save<i class="el-icon-upload el-icon--right"></i></el-button>
 			    </div>  
 		</div>	
 </template>
@@ -25,7 +25,7 @@
 	  name: 'App',
 	  data(){
 	     return {
-	                 content: `<p>题目未响应，信息有误！</p>`,
+	                 content: `<p>The question has not been answered, the information is wrong!</p>`,
 	                 editorOption: {
 	                   modules:{
 	                               toolbar:[
@@ -105,7 +105,7 @@
 						if(res.data.message=='Y'){
 							this.$message({
 							          showClose: true,
-							          message: '题目修改成功',
+							          message: 'problem modification failed',
 							          type: 'success'
 							        });
 							this.moveto("/loginSuccess/pblist");
@@ -113,7 +113,7 @@
 						else{
 							this.$message({
 							          showClose: true,
-							          message: '存在某些未知的问题，修改失败',
+							          message: 'There are some unknown problems, the modification failed',
 							          type: 'warning'
 							        });
 						}

@@ -3,23 +3,23 @@
 	<el-row type="flex" justify="center" align="middle">
 	<!-- justify 对齐方式 -->
 		<el-card shadow="always" >
-			<h1 style="text-align: center;">忘记密码</h1>
+			<h1 style="text-align: center;">Forgot password</h1>
 			<el-divider></el-divider>
 			<!-- form表单 -->
 			<el-form  :model="information" ref="information" label-width="100px" class="demo-ruleForm">
 			  <!-- 用户名 -->
 			  <el-form-item
-				  label="邮箱"
+				  label="email"
 				  prop="email"
 				  :rules="[
-				  { required: true, message: '邮箱不能为空'},
+				  { required: true, message: 'E-mail can not be empty'},
 				  ]"
 			  >
-				  <el-input placeholder="请输入邮箱" type="text" v-model="information.email" autocomplete="off"></el-input>
+				  <el-input placeholder="please input your email" type="text" v-model="information.email" autocomplete="off"></el-input>
 			  </el-form-item>
 			  <!-- 按钮 -->
 			  <el-form-item>
-				  <el-button type="primary" @click="forget('information')">确认</el-button>
+				  <el-button type="primary" @click="forget('information')">confirm</el-button>
 			  </el-form-item>
 			</el-form>
 	
@@ -61,7 +61,7 @@ export default{
 						});
 						this.$message({
 						          showClose: true,
-						          message: '请前往您的邮箱查看我们发送给您的密码',
+						          message: 'Please go to your email to check the password we sent you',
 						          type: 'success'
 						        });
 						this.moveto('/');

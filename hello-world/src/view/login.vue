@@ -5,42 +5,42 @@
     <el-row type="flex" justify="center" align="middle">
     <!-- justify 对齐方式 -->
 		<el-card shadow="always" >
-			<h1 style="text-align: center;">登录/注册</h1>
+			<h1 style="text-align: center;">login/redister</h1>
 			<el-divider></el-divider>
 			<!-- form表单 -->
 			<el-form  :model="information" ref="information" label-width="100px" class="demo-ruleForm">
 			  <!-- 用户名 -->
 			  <el-form-item
-				  label="邮箱"
+				  label="email"
 				  prop="name"
 				  :rules="[
-				  { required: true, message: '邮箱不能为空'},
+				  { required: true, message: 'E-mail can not be empty'},
 				  ]"
 			  >
-				  <el-input placeholder="请输入邮箱" type="text" v-model="information.name" autocomplete="off"></el-input>
+				  <el-input placeholder="please input your email" type="text" v-model="information.name" autocomplete="off"></el-input>
 			  </el-form-item>
 
 			  <!-- 密码 -->
 			  <el-form-item
-				  label="密码"
+				  label="password"
 				  prop="password"
 				  :rules="[
-				  { required: true, message: '密码不能为空'},
+				  { required: true, message: 'password can not be empty'},
 				  ]"
 			  >
-				  <el-input placeholder="请输入密码" v-model="information.password" show-password></el-input>
+				  <el-input placeholder="please input your password" v-model="information.password" show-password></el-input>
 			  </el-form-item>
 			  
 			  <!-- 选择身份-->
 			  <div align="middle">
-				  <el-radio v-model="information.id" label="candidate">候选人</el-radio>
-				  <el-radio v-model="information.id" label="interviewer">面试官</el-radio>
+				  <el-radio v-model="information.id" label="candidate">candidate</el-radio>
+				  <el-radio v-model="information.id" label="interviewer">interviewer</el-radio>
 			  </div>
 			  <!-- 按钮 -->
 			  <el-form-item>
-				  <el-button type="primary" @click="loginning('information')">登录</el-button>
-				  <el-button @click="moveto2('/register')">注册</el-button>
-				  <el-button @click="moveto2('/forgetpwd')">忘记密码</el-button>
+				  <el-button type="primary" @click="loginning('information')">login</el-button>
+				  <el-button @click="moveto2('/register')">register</el-button>
+				  <el-button @click="moveto2('/forgetpwd')">forget password</el-button>
 			  </el-form-item>
 			</el-form>
 
@@ -103,7 +103,7 @@ import axios from 'axios';
 										this.moveto('/loginSuccess');
 									}
 									else{
-										this.$message.error('请检查用户名、密码和身份后再试！');
+										this.$message.error('Please check your username, password and identity and try again!');
 									}
 								})
 								.catch((error)=>{

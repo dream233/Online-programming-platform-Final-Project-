@@ -11,52 +11,52 @@
     <!-- justify 对齐方式 -->
           <el-col :span="9">
               <el-card shadow="always" >
-                <h1 style="text-align: center;">注册界面</h1>
+                <h1 style="text-align: center;">register</h1>
                 <el-divider></el-divider>
                 <!-- form表单 -->
                 <el-form  :model="information" status-icon :rules="rules" ref="information" label-width="100px" class="demo-information">
                   <!-- 用户名 -->
                   <el-form-item
-                      label="邮箱"
+                      label="email"
                       prop="name"
                   >
-                      <el-input placeholder="请输入邮箱" type="name" v-model="information.name" autocomplete="off"></el-input>
+                      <el-input placeholder="please input email" type="name" v-model="information.name" autocomplete="off"></el-input>
                   </el-form-item>
 				  
 				  <!-- 昵称-->
 				  <el-form-item
-				      label="昵称"
+				      label="username"
 				      prop="username"
 				  >
-				      <el-input placeholder="请输入昵称" type="username" v-model="information.username" autocomplete="off"></el-input>
+				      <el-input placeholder="please input username" type="username" v-model="information.username" autocomplete="off"></el-input>
 				  </el-form-item>
 
                   <!-- 密码 -->
                   <el-form-item
-                      label="密码"
+                      label="password"
                       prop="password"
                   >
-                      <el-input placeholder="请输入密码" type="password" v-model="information.password" show-password></el-input>
+                      <el-input placeholder="please input password" type="password" v-model="information.password" show-password></el-input>
                   </el-form-item>
 				  
 				  <!-- 确认密码 -->
 				  <el-form-item
-				      label="确认密码"
+				      label="confirm password"
 				      prop="repassword"
 				  >
-				      <el-input placeholder="请确认密码" type="repassword" v-model="information.repassword" show-password></el-input>
+				      <el-input placeholder="please confirm password" type="repassword" v-model="information.repassword" show-password></el-input>
 				  </el-form-item>
 				  
 				  <!-- 身份 -->
 				  <div align="middle">
-				  				  <el-radio v-model="information.id" label="candidate">候选人</el-radio>
-				  				  <el-radio v-model="information.id" label="interviewer">面试官</el-radio>
+				  				  <el-radio v-model="information.id" label="candidate">candidate</el-radio>
+				  				  <el-radio v-model="information.id" label="interviewer">interviewer</el-radio>
 				  </div>
 
                   <!-- 按钮 -->
                   <el-form-item>
-                      <el-button type="primary" @click="submitForm('information')">提交</el-button>
-                      <el-button @click="resetForm('information')">重置</el-button>
+                      <el-button type="primary" @click="submitForm('information')">submit</el-button>
+                      <el-button @click="resetForm('information')">reset</el-button>
                   </el-form-item>
                 </el-form>
 
@@ -79,10 +79,10 @@
 	            var checkName = (rule, value, callback) => {
 					const nameRule = /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/;
 	            	if(value==='') {
-	            		return callback(new Error('邮箱不能为空'));
+	            		return callback(new Error('E-mail can not be empty'));
 	            	}
 					else if(!nameRule.test(value)){
-						return callback(new Error('格式错误'));
+						return callback(new Error('wrong format'));
 					}
 	            	else {
 	            		callback();
@@ -90,7 +90,7 @@
 	            };
 				var checkUsername = (rule, value, callback) => {
 					if(value==='') {
-						return callback(new Error('昵称不能为空'));
+						return callback(new Error('username can not be blank'));
 					}
 					else {
 						callback();
@@ -98,17 +98,17 @@
 				};
 	            var checkId = (rule, value, callback) => {
 	                    if (value === '') {
-	                      return callback(new Error('身份不能为空'));
+	                      return callback(new Error('Identity cannot be empty'));
 	                    }
 						else if(!(value=='candidate'||value=='interviewer'||value=='1'||value=='2')){
-							callback(new Error('请输入正确的身份信息'));
+							callback(new Error('Please enter correct identity information'));
 						}else {
 							callback();
 						}
 	                  };
 	                  var validatePass = (rule, value, callback) => {
 	                    if (value === '') {
-	                      callback(new Error('请输入密码'));
+	                      callback(new Error('please enter password'));
 	                    } else {
 	                      if (this.information.repassword !== '') {
 	                        this.$refs.information.validateField('repassword');
@@ -118,9 +118,9 @@
 	                  };
 	                  var validatePass2 = (rule, value, callback) => {
 	                    if (value === '') {
-	                      callback(new Error('请再次输入密码'));
+	                      callback(new Error('please enter password again'));
 	                    } else if (value !== this.information.password) {
-	                      callback(new Error('两次输入密码不一致!'));
+	                      callback(new Error('The passwords entered twice are inconsistent!'));
 	                    } else {
 	                      callback();
 	                    }
@@ -168,7 +168,7 @@
 				    this.$refs[formName].validate((valid) => {
 						if(this.information.id==''){
 							this.$message({
-							          message: '未选择身份！',
+							          message: 'No identity selected!',
 							          type: 'warning'
 							        });
 							valid=!valid;
@@ -180,7 +180,7 @@
 								.then((res)=>{
 									if(res.data.message=='Y'){
 										this.$message({
-										          message: '注册成功！请前往邮箱激活！',
+										          message: 'registration success! Please go to the mailbox to activate!',
 										          type: 'success'
 										        });
 										this.moveto('/');
@@ -188,7 +188,7 @@
 									else if(res.data.message=='N'){
 										this.resetForm('information');
 										this.$message({
-										          message: '邮箱重复，请重新注册！',
+										          message: 'The email address is duplicated, please register again!',
 										          type: 'warning'
 										        });
 									}

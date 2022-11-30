@@ -88,10 +88,10 @@
 		  // resetSelectionOnContextMenu:false,
           // hint.js options
           hintOptions:{
-            // 当匹配只有一项的时候是否自动补全
+            // Whether to autocomplete when there is only one match
             completeSingle: false
           },
-          //快捷键 可提供三种模式 sublime、emacs、vim
+          //Shortcut keys can provide three modes: sublime、emacs、vim
           keyMap: "sublime",
           matchBrackets: true,
           showCursorWhenSelecting: true,
@@ -206,7 +206,7 @@
 		this.getMessage()
 	},
 	destroyed() {
-		// 每次离开当前界面时，清除定时器
+		// Clear the timer every time you leave the current interface
 		clearInterval(this.timer)
 		this.timer = null
 	}

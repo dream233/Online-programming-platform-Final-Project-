@@ -19,7 +19,7 @@
 	export default{
 		data(){
 			return{
-				message: '<p>题目未响应，信息有误！</p>'
+				message: '<p>The question has not been answered, the information is wrong!</p>'
 			}
 		},
 		methods:{

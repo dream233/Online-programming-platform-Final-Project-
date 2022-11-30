@@ -8,17 +8,16 @@
 		  background-color="#545c64"
 		  text-color="#fff"
 		  active-text-color="#ffd04b">
-		  <el-menu-item index="1" @click="moveto('/loginSuccess')">首页</el-menu-item>
-		  <el-menu-item index="2" @click="moveto('/loginSuccess/main')">加入面试房间</el-menu-item>
+		  <el-menu-item index="1" @click="moveto('/loginSuccess')">home</el-menu-item>
+		  <el-menu-item index="2" @click="moveto('/loginSuccess/main')">join room</el-menu-item>
 		  <el-submenu index="3">
 			  <template slot="title">
-				  面试题
+				  problem
 			  </template>
-			  <el-menu-item index="3-1" @click="moveto('/loginSuccess/pblist')">面试题汇总</el-menu-item>
-			  <el-menu-item index="3-2" @click="newProblem()">新建面试题</el-menu-item>
+			  <el-menu-item index="3-1" @click="moveto('/loginSuccess/pblist')">Summary of interview questions</el-menu-item>
+			  <el-menu-item index="3-2" @click="newProblem()">Create a new interview question</el-menu-item>
 		  </el-submenu>
-		  <el-menu-item index="4" @click="moveto('/loginSuccess/aboutus')">关于我们</el-menu-item>
-		  <el-menu-item index="5" @click="moveto2('/')">退出</el-menu-item>
+		  <el-menu-item index="4" @click="moveto2('/')">exit</el-menu-item>
 		</el-menu>
 	</div>
 </template>
@@ -56,7 +55,7 @@
 			  if(information.id=='candidate'){
 				   this.$message({
 				            showClose: true,
-				            message: '只有面试官有权限',
+				            message: 'Only the interviewer has permission',
 				            type: 'warning',
 							// center: true
 				          });
@@ -67,7 +66,7 @@
 		  },
 		  test(){		  
 			  var information = this.information;
-			  alert("当前用户邮箱："+ information.name + "用户名： " + information.username + "用户身份： " + information.id)
+			  alert("Current user mailbox:"+ information.name + "username: " + information.username + "user ID: " + information.id)
 		  }
 	    },
 		created(){		

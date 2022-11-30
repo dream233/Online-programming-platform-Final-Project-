@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import login from './view/login.vue'
-import aboutus from './view/aboutus.vue'
 import register from './view/register.vue'
 import main from './view/main.vue'
 import problemEditor from './components/problemEditor.vue'
@@ -37,11 +36,6 @@ const router = new VueRouter({
 			component:main			
 		},
 		{
-			path:'/aboutus',
-			name:'aboutus',
-			component:aboutus
-		},
-		{
 			path:'/register',
 			name:'register',
 			component:register
@@ -56,10 +50,6 @@ const router = new VueRouter({
 			name: 'loginSuccess',
 			component: loginSuccess,
 			children:[
-				{
-					path: 'aboutus',
-					component: aboutus
-				},
 				{
 					path: 'main',
 					component: main

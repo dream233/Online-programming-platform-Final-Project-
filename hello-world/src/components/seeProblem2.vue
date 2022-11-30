@@ -12,7 +12,7 @@
 	    <div class="ql-editor">
 			<!-- <button @click="t">点击这里显示题目</button> -->
 			<el-row>
-				<el-input v-model="problemid" placeholder="请输入题目id"></el-input>
+				<el-input v-model="problemid" placeholder="please input problem id"></el-input>
 				<el-button type="success" icon="el-icon-check" circle @click="seeProblem()"></el-button>
 			</el-row>
 			<p v-html="message"></p>
@@ -31,7 +31,7 @@
 	export default{
 		data(){
 			return{
-				message: '<p>题目未响应，信息有误！</p>',
+				message: '<p>The question has not been answered, the information is wrong!</p>',
 				problemid: ''
 			}
 		},
