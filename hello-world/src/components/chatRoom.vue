@@ -77,26 +77,6 @@ export default {
     var x = {
       roomID: information.roomID,
     };
-    var that = this;
-    const path = "http://111.229.68.117:5000/joinroom";
-    axios
-      .post(path, x)
-      .then((res) => {
-        // Send roomID to the backend to get chat records
-        this.history = res.data.chathistory;
-        that.history = res.data.chathistory;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-    console.log(this);
-    // Successfully entered the room, call joinRoom
-    if (this.roomID && information.id) {
-      this.socket.emit("joinRoom", IDdata);
-    } else {
-      this.$router.push("/");
-    }
 
     // Listen to the information returned by the server
     this.socket.on("broadcastMsg", (data) => {
